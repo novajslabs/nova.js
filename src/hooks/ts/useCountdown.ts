@@ -10,20 +10,9 @@ interface Counter {
   togglePause: () => void;
 }
 
-interface Options {
-  startPaused?: boolean;
-  onFinish?: () => void;
-}
-
-export const useCountdown = (
-  min: number,
-  max: number,
-  options?: Options
-): Counter => {
-  const startPaused = options?.startPaused;
-  const onFinish = options?.onFinish;
+export const useCountdown = (min: number, max: number): Counter => {
   const [count, setCount] = useState(max);
-  const [paused, setPaused] = useState(startPaused ?? false);
+  const [paused, setPaused] = useState(false);
   const [isOver, setIsOver] = useState(false);
 
   useEffect(() => {
@@ -43,10 +32,6 @@ export const useCountdown = (
 
     return () => clearInterval(interval);
   }, [count, min, max, paused]);
-
-  useEffect(() => {
-    isOver && onFinish && onFinish();
-  }, [isOver]);
 
   return {
     current: count.toString(),
