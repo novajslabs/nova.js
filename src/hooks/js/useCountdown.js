@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
 export const useCountdown = (min, max, options) => {
-  const startPaused = options.startPaused;
-  const onFinish = options.onFinish;
+  const startPaused = (options && options.startPaused) ?? false;
+  const onFinish = (options && options.onFinish) ?? (() => {});
   const [count, setCount] = useState(max);
-  const [paused, setPaused] = useState(startPaused ?? false);
+  const [paused, setPaused] = useState(startPaused);
   const [isOver, setIsOver] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export const useCountdown = (min, max, options) => {
   }, [count, min, max, paused]);
 
   useEffect(() => {
-    isOver && onFinish && onFinish();
+    isOver && onFinish();
   }, [isOver]);
 
   return {
