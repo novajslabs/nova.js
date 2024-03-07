@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 
 export const useCountdown = (min, max, options) => {
-  const startPaused = (options && options.startPaused) ?? false;
-  const onFinish = (options && options.onFinish) ?? (() => {});
+  const startPaused =
+    options && options.startPaused ? options.startPaused : false;
+  const onFinish = options && options.onFinish ? options.onFinish : () => {};
   const [count, setCount] = useState(max);
   const [paused, setPaused] = useState(startPaused);
   const [isOver, setIsOver] = useState(false);
