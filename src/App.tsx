@@ -1,4 +1,4 @@
-import { useCountup } from "./hooks/ts/useCountup";
+import { useCountup } from "./hooks/js/useCountup";
 
 function App() {
   const { current, isPaused, isOver, pause, play, reset, togglePause } =
