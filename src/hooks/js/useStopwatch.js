@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const addLeadingZero = (digit) => {
+const addLeadingZero = (digit) => {
   let timeStr = "";
 
   digit % 10 === digit ? (timeStr += `0${digit}`) : (timeStr += `${digit}`);
