@@ -1,4 +1,4 @@
-import { useStopwatch } from "./hooks/ts/useStopwatch";
+import { useTimer } from "./hooks/ts/useTimer";
 
 function App() {
   const {
@@ -10,11 +10,12 @@ function App() {
     currentMinutes,
     currentSeconds,
     elapsedSeconds,
+    remainingSeconds,
     pause,
     play,
     reset,
     togglePause,
-  } = useStopwatch();
+  } = useTimer("00:00:00:05");
 
   return (
     <div>
@@ -26,6 +27,7 @@ function App() {
       <p>Current minutes: {currentMinutes}</p>
       <p>Current seconds: {currentSeconds}</p>
       <p>Elapsed seconds: {elapsedSeconds}</p>
+      <p>Remaining seconds: {remainingSeconds}</p>
       <button onClick={pause}>Pause</button>
       <button onClick={play}>Play</button>
       <button onClick={reset}>Reset</button>
