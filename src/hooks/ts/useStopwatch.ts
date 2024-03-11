@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
 
+export const addLeadingZero = (digit: number): string => {
+  let timeStr = "";
+
+  digit % 10 === digit ? (timeStr += `0${digit}`) : (timeStr += `${digit}`);
+
+  return timeStr;
+};
+
 interface Stopwatch {
   current: string;
   isPaused: boolean;
@@ -63,7 +71,11 @@ export const useStopwatch = (): Stopwatch => {
   }, [time, paused]);
 
   return {
-    current: `${time.days}${divider}${time.hours}${divider}${time.minutes}${divider}${time.seconds}`,
+    current: `${addLeadingZero(time.days)}${divider}${addLeadingZero(
+      time.hours
+    )}${divider}${addLeadingZero(time.minutes)}${divider}${addLeadingZero(
+      time.seconds
+    )}`,
     isPaused: paused,
     isOver,
     currentDays: time.days,
