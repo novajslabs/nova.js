@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const parseTime = (time: string) => {
+const parseTime = (time) => {
   const splitTime = time.split(":");
 
   const [days, hours, minutes, seconds] = splitTime.map((value) =>
@@ -10,7 +10,7 @@ const parseTime = (time: string) => {
   return { days, hours, minutes, seconds };
 };
 
-const addLeadingZero = (digit: number): string => {
+const addLeadingZero = (digit) => {
   let timeStr = "";
 
   digit % 10 === digit ? (timeStr += `0${digit}`) : (timeStr += `${digit}`);
@@ -18,23 +18,7 @@ const addLeadingZero = (digit: number): string => {
   return timeStr;
 };
 
-interface Timer {
-  current: string;
-  isPaused: boolean;
-  isOver: boolean;
-  currentDays: number;
-  currentHours: number;
-  currentMinutes: number;
-  currentSeconds: number;
-  elapsedSeconds: number;
-  remainingSeconds: number;
-  pause: () => void;
-  play: () => void;
-  reset: () => void;
-  togglePause: () => void;
-}
-
-export const useTimer = (startTime: string): Timer => {
+export const useTimer = (startTime) => {
   const { days, hours, minutes, seconds } = parseTime(startTime);
   const [time, setTime] = useState({ days, hours, minutes, seconds });
   const [paused, setPaused] = useState(false);
