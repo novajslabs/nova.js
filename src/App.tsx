@@ -1,38 +1,28 @@
-import { useTimer } from "./hooks/ts/useTimer";
+import { useFetch } from "./hooks/js/useFetch";
 
 function App() {
-  const {
-    current,
-    isPaused,
-    isOver,
-    currentDays,
-    currentHours,
-    currentMinutes,
-    currentSeconds,
-    elapsedSeconds,
-    remainingSeconds,
-    pause,
-    play,
-    reset,
-    togglePause,
-  } = useTimer("00:00:00:05");
+  const { data, error, isLoading, isError, isSuccess, refetch } = useFetch(
+    "https://api.quotable.io/random"
+  );
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    console.log(error);
+    return <span>Error</span>;
+  }
+
+  if (isSuccess) {
+    console.log(data);
+  }
 
   return (
-    <div>
-      <p>Counter value: {current}</p>
-      <p>Is the counter paused? {isPaused ? "Yes" : "No"}</p>
-      <p>Has the counter over? {isOver ? "Yes" : "No"}</p>
-      <p>Current days: {currentDays}</p>
-      <p>Current hours: {currentHours}</p>
-      <p>Current minutes: {currentMinutes}</p>
-      <p>Current seconds: {currentSeconds}</p>
-      <p>Elapsed seconds: {elapsedSeconds}</p>
-      <p>Remaining seconds: {remainingSeconds}</p>
-      <button onClick={pause}>Pause</button>
-      <button onClick={play}>Play</button>
-      <button onClick={reset}>Reset</button>
-      <button onClick={togglePause}>Toggle Pause</button>
-    </div>
+    <>
+      {data && data.content}
+      <button onClick={refetch}>Again</button>
+    </>
   );
 }
 
