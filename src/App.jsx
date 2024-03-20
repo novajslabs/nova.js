@@ -1,6 +1,6 @@
-import { useFetch } from "./hooks/ts/useFetch";
+import { useFetch } from "./hooks/js/useFetch";
 
-const AppTs = () => {
+const AppJs = () => {
   const { data, error, isLoading, isError, isSuccess, refetch } = useFetch(
     "https://api.quotable.io/random"
   );
@@ -26,4 +26,4 @@ const AppTs = () => {
   );
 };
 
-export default AppTs;
+export default AppJs;
