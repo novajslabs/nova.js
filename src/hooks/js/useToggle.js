@@ -5,7 +5,5 @@ export const useToggle = (initialValue) => {
 
   const handleToggle = () => setCurrent((prev) => !prev);
 
-  const setToggle = (value) => setCurrent(value);
-
-  return { current, handleToggle, setToggle };
+  return { current, handleToggle };
 };
