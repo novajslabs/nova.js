@@ -1,28 +1,14 @@
-import { useFetch } from "./hooks/js/useFetch";
+import { useToggle } from "./hooks/js/useToggle";
 
 const AppJs = () => {
-  const { data, error, isLoading, isError, isSuccess, refetch } = useFetch(
-    "https://api.quotable.io/random"
-  );
-
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    console.log(error);
-    return <span>Error</span>;
-  }
-
-  if (isSuccess) {
-    console.log(data);
-  }
+  const { current, handleToggle, setToggle } = useToggle(false);
 
   return (
-    <>
-      {data && data.content}
-      <button onClick={refetch}>Again</button>
-    </>
+    <div>
+      <p>Current value: {current ? "True" : "False"}</p>
+      <button onClick={handleToggle}>Toggle value</button>
+      <button onClick={() => setToggle(false)}>Force false</button>
+    </div>
   );
 };
 
