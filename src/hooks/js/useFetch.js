@@ -4,33 +4,32 @@ export const useFetch = (url, reqOpt) => {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const effectRan = useRef(false);
 
   const fetchData = async () => {
     setIsLoading(true);
 
-    await fetch(url, reqOpt && reqOpt)
-      .then(async (res) => {
-        if (res.status === 200) {
-          setIsSuccess(true);
-          setIsError(false);
-          setData(await res.json());
-          setError(undefined);
-        } else {
-          setIsSuccess(false);
-          setIsError(true);
-          setData(undefined);
-          setError(await res.json());
-        }
-      })
-      .catch((e) => {
+    try {
+      const res = await fetch(url, reqOpt && reqOpt);
+      const data = await res.json();
+
+      if (res.status === 200) {
+        setIsSuccess(true);
+        setData(data);
+        setError(undefined);
+      } else {
         setIsSuccess(false);
-        setIsError(true);
+        setError(data);
         setData(undefined);
+      }
+    } catch (e) {
+      setIsSuccess(false);
+      setData(undefined);
+      if (e instanceof Error) {
         setError(e);
-      });
+      }
+    }
 
     setIsLoading(false);
   };
@@ -45,5 +44,5 @@ export const useFetch = (url, reqOpt) => {
 
   const refetch = () => fetchData();
 
-  return { data, error, isLoading, isError, isSuccess, refetch };
+  return { data, error, isLoading, isError: !isSuccess, isSuccess, refetch };
 };
