@@ -1,12 +1,27 @@
-import { useToggle } from "./hooks/ts/useToggle";
+import { useFetch } from "./hooks/ts/useFetch";
 
 const AppTs = () => {
-  const { current, handleToggle } = useToggle(false);
+  const { data, error, isLoading, isError, isSuccess, refetch } = useFetch(
+    "https://api.quotable.io/random"
+  );
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    console.log(error);
+    return <span>Error</span>;
+  }
+
+  if (isSuccess) {
+    console.log(data);
+  }
 
   return (
     <div>
-      <p>Current value: {current ? "True" : "False"}</p>
-      <button onClick={handleToggle}>Toggle value</button>
+      <p>{data && data.content}</p>
+      <button onClick={refetch}>Another quote</button>
     </div>
   );
 };
