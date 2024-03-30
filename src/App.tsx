@@ -1,27 +1,16 @@
-import { useFetch } from "./hooks/ts/useFetch";
+import { useLocalStorage } from "./hooks/ts/useLocalStorage";
 
 const AppTs = () => {
-  const { data, error, isLoading, isError, isSuccess, refetch } = useFetch(
-    "https://api.quotable.io/random"
+  const { current, setValue, removeValue } = useLocalStorage(
+    "firstVisit",
+    true
   );
-
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    console.log(error);
-    return <span>Error</span>;
-  }
-
-  if (isSuccess) {
-    console.log(data);
-  }
 
   return (
     <div>
-      <p>{data && data.content}</p>
-      <button onClick={refetch}>Another quote</button>
+      <p>Valor actual: {current}</p>
+      <button onClick={() => setValue(true)}>Nuevo valor</button>
+      <button onClick={removeValue}>Eliminar valor</button>
     </div>
   );
 };
