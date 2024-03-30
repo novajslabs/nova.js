@@ -1,27 +1,15 @@
-import { useFetch } from "./hooks/js/useFetch";
+import { useLocalStorage } from "./hooks/js/useLocalStorage";
 
 const AppTs = () => {
-  const { data, error, isLoading, isError, isSuccess, refetch } = useFetch(
-    "https://api.quotable.io/random"
-  );
-
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    console.log(error);
-    return <span>Error</span>;
-  }
-
-  if (isSuccess) {
-    console.log(data);
-  }
+  const { current, setItemValue, removeItem } = useLocalStorage("number", 0);
 
   return (
     <div>
-      <p>{data && data.content}</p>
-      <button onClick={refetch}>Another quote</button>
+      <p>Valor actual: {current}</p>
+      <button onClick={() => setItemValue(Math.floor(Math.random() * 11))}>
+        Generate new number
+      </button>
+      <button onClick={removeItem}>Delete "number" item</button>
     </div>
   );
 };

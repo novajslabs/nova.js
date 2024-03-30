@@ -1,16 +1,18 @@
 import { useLocalStorage } from "./hooks/ts/useLocalStorage";
 
 const AppTs = () => {
-  const { current, setValue, removeValue } = useLocalStorage(
-    "firstVisit",
-    true
+  const { current, setItemValue, removeItem } = useLocalStorage<number>(
+    "number",
+    0
   );
 
   return (
     <div>
       <p>Valor actual: {current}</p>
-      <button onClick={() => setValue(true)}>Nuevo valor</button>
-      <button onClick={removeValue}>Eliminar valor</button>
+      <button onClick={() => setItemValue(Math.floor(Math.random() * 11))}>
+        Generate new number
+      </button>
+      <button onClick={removeItem}>Delete "number" item</button>
     </div>
   );
 };

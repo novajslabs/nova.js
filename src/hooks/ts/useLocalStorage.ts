@@ -20,18 +20,17 @@ const removeLocalStorageItem = (key: string) => {
   dispatchStorageEvent(key, null);
 };
 
-const useLocalStorageSubscribe = (cb: () => void) => {
+const localStorageSubscribe = (cb: () => void) => {
   window.addEventListener("storage", cb);
   return () => window.removeEventListener("storage", cb);
 };
 
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
   const getSnapshot = () => getLocalStorageItem(key);
-
-  const store = useSyncExternalStore(useLocalStorageSubscribe, getSnapshot);
+  const store = useSyncExternalStore(localStorageSubscribe, getSnapshot);
 
   const setState = useCallback(
-    (v: T | ((prevState: T) => T)) => {
+    (v: T) => {
       try {
         let nextState: T;
         if (isFunction(v)) {
@@ -64,7 +63,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
 
   return {
     current: store ? JSON.parse(store) : initialValue,
-    setValue: setState,
-    removeValue: () => removeLocalStorageItem(key),
+    setItemValue: setState,
+    removeItem: () => removeLocalStorageItem(key),
   };
 };

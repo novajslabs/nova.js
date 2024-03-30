@@ -1,41 +1,37 @@
 import { useEffect, useSyncExternalStore, useCallback } from "react";
 
-const dispatchStorageEvent = (key: string, newValue: string | null) =>
+const isFunction = (value) => typeof value === "function";
+
+const dispatchStorageEvent = (key, newValue) =>
   window.dispatchEvent(new StorageEvent("storage", { key, newValue }));
 
-const setLocalStorageItem = <T>(key: string, value: T) => {
+const getLocalStorageItem = (key) => window.localStorage.getItem(key);
+
+const setLocalStorageItem = (key, value) => {
   const stringifiedValue = JSON.stringify(value);
   window.localStorage.setItem(key, stringifiedValue);
   dispatchStorageEvent(key, stringifiedValue);
 };
 
-const removeLocalStorageItem = (key: string) => {
+const removeLocalStorageItem = (key) => {
   window.localStorage.removeItem(key);
   dispatchStorageEvent(key, null);
 };
 
-const getLocalStorageItem = (key: string) => window.localStorage.getItem(key);
-
-const useLocalStorageSubscribe = (cb: () => void) => {
+const localStorageSubscribe = (cb) => {
   window.addEventListener("storage", cb);
   return () => window.removeEventListener("storage", cb);
 };
 
-const isFunction = <T>(
-  value: T | ((prevState: T) => T)
-): value is (prevState: T) => T => typeof value === "function";
-
-export const useLocalStorage = <T>(key: string, initialValue: T) => {
+export const useLocalStorage = (key, initialValue) => {
   const getSnapshot = () => getLocalStorageItem(key);
-
-  const store = useSyncExternalStore(useLocalStorageSubscribe, getSnapshot);
+  const store = useSyncExternalStore(localStorageSubscribe, getSnapshot);
 
   const setState = useCallback(
-    (v: T | ((prevState: T) => T)) => {
+    (v) => {
       try {
-        let nextState: T;
+        let nextState;
         if (isFunction(v)) {
-          // Asegúrate de que store no sea null antes de parsearlo
           const parsedStore = store ? JSON.parse(store) : null;
           nextState = v(parsedStore ?? initialValue);
         } else {
@@ -63,5 +59,9 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
     }
   }, [key, initialValue]);
 
-  return { store: store ? JSON.parse(store) : initialValue, setState };
+  return {
+    current: store ? JSON.parse(store) : initialValue,
+    setItemValue: setState,
+    removeItem: () => removeLocalStorageItem(key),
+  };
 };
