@@ -1,19 +1,22 @@
-import { useLocalStorage } from "./hooks/ts/useLocalStorage";
+import { useInput } from "./hooks/ts/useInput";
 
 const AppTs = () => {
-  const { current, setItemValue, removeItem } = useLocalStorage<number>(
-    "number",
-    0
-  );
+  const { inputValue: email, onInputChange: emailChange } =
+    useInput<string>("");
+  const { inputValue: password, onInputChange: passwordChange } =
+    useInput<string>("");
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(email, password);
+  };
 
   return (
-    <div>
-      <p>Valor actual: {current}</p>
-      <button onClick={() => setItemValue(Math.floor(Math.random() * 11))}>
-        Generate new number
-      </button>
-      <button onClick={removeItem}>Delete "number" item</button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input type="email" value={email} onChange={emailChange} />
+      <input type="password" value={password} onChange={passwordChange} />
+      <button type="submit">Login</button>
+    </form>
   );
 };
 
