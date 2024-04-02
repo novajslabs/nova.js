@@ -1,17 +1,21 @@
-import { useLocalStorage } from "./hooks/js/useLocalStorage";
+import { useInput } from "./hooks/js/useInput";
 
-const AppTs = () => {
-  const { current, setItemValue, removeItem } = useLocalStorage("number", 0);
+const AppJs = () => {
+  const { inputValue: email, onInputChange: emailChange } = useInput("");
+  const { inputValue: password, onInputChange: passwordChange } = useInput("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(email, password);
+  };
 
   return (
-    <div>
-      <p>Valor actual: {current}</p>
-      <button onClick={() => setItemValue(Math.floor(Math.random() * 11))}>
-        Generate new number
-      </button>
-      <button onClick={removeItem}>Delete "number" item</button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input type="email" value={email} onChange={emailChange} />
+      <input type="password" value={password} onChange={passwordChange} />
+      <button type="submit">Login</button>
+    </form>
   );
 };
 
-export default AppTs;
+export default AppJs;
