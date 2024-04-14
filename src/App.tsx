@@ -1,23 +1,14 @@
-import { useInput } from "./hooks/ts/useInput";
+import { useRandomColor } from "./hooks/ts/useRandomColor";
 
-const AppTs = () => {
-  const { inputValue: email, onInputChange: emailChange } =
-    useInput<string>("");
-  const { inputValue: password, onInputChange: passwordChange } =
-    useInput<string>("");
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(email, password);
-  };
+function AppTs() {
+  const { color, generateColor } = useRandomColor();
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="email" value={email} onChange={emailChange} />
-      <input type="password" value={password} onChange={passwordChange} />
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <h1 style={{ color: color }}>Color aleatorio</h1>
+      <button onClick={generateColor}>Generar nuevo color</button>
+    </div>
   );
-};
+}
 
 export default AppTs;
