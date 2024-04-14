@@ -1,21 +1,14 @@
-import { useInput } from "./hooks/js/useInput";
+import { useRandomColor } from "./hooks/js/useRandomColor";
 
-const AppJs = () => {
-  const { inputValue: email, onInputChange: emailChange } = useInput("");
-  const { inputValue: password, onInputChange: passwordChange } = useInput("");
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(email, password);
-  };
+function AppJs() {
+  const { color, generateColor } = useRandomColor();
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="email" value={email} onChange={emailChange} />
-      <input type="password" value={password} onChange={passwordChange} />
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <h1 style={{ color: color }}>Color aleatorio</h1>
+      <button onClick={generateColor}>Generar nuevo color</button>
+    </div>
   );
-};
+}
 
 export default AppJs;
