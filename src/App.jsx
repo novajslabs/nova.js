@@ -1,12 +1,12 @@
-import { useRandomColor } from "./hooks/js/useRandomColor";
+import { useBattery } from "./hooks/js/useBattery";
 
 function AppJs() {
-  const { color, generateColor } = useRandomColor();
+  const battery = useBattery();
 
   return (
     <div>
-      <h1 style={{ color: color }}>Color aleatorio</h1>
-      <button onClick={generateColor}>Generar nuevo color</button>
+      <p>Battery level:{battery.level * 100}</p>
+      <p>{battery.charging ? "Battery charging" : "Battery not charging"}</p>
     </div>
   );
 }
