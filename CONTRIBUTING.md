@@ -8,7 +8,7 @@ Thanks for checking out Nova.js! We'd love for you to contribute. Whether you're
 
 If you want to contribute new hooks, fixing bugs or improving existing ones, [go directly to the issues](https://github.com/novajslabs/nova.js/issues), create a new one or select one from the list that is not assigned. Then comment that you want to solve it. We will reply to you as soon as possible.
 
-If the issue is assigned to you, please (follow our requirements)[#contribution-requirements] so that your pull request can be accepted.
+If the issue is assigned to you, please (follow our requirements)[https://github.com/novajslabs/nova.js/blob/main/CONTRIBUTING.md#contribution-requirements] so that your pull request can be accepted.
 
 ### Filling Issues
 
