@@ -8,7 +8,7 @@ Please follow the documentation at [novajs.co](https://novajs.co/).
 
 ## Questions
 
-For questions and support please [open a discussion](https://github.com/nova-js/nova.js/discussions).
+For questions and support please [open a discussion](https://github.com/novajslabs/nova.js/discussions).
 
 ## Support
 
@@ -28,8 +28,8 @@ Star this repo.
 
 ## Contributions
 
-Please make sure to read the [Contributing Guide](https://github.com/nova-js/nova.js/blob/main/CONTRIBUTING.md) before making a pull request.
+Please make sure to read the [Contributing Guide](https://github.com/novajslabs/nova.js/blob/main/CONTRIBUTING.md) before making a pull request.
 
 ## License
 
-[MIT](https://github.com/nova-js/nova.js/blob/main/LICENSE)
+[MIT](https://github.com/novajslabs/nova.js/blob/main/LICENSE)
