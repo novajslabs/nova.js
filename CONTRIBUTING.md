@@ -20,7 +20,7 @@ Before opening a new issue please check existing ones (including closed ones) to
 
 ### Installing prerequisites
 
-You'll need git, a recent version of [Node.js](https://nodejs.org/en/) (currently v18.X is recommended) and [pnpm](https://pnpm.io/).
+You'll need git, a recent version of [Node.js](https://nodejs.org/en/) (v18.X is recommended) and npm, yarn or pnpm (pnpm is recomended).
 
 ```bash
 git clone https://github.com/novajslabs/nova.js
