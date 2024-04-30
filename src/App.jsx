@@ -1,14 +1,23 @@
 import { useBattery } from "./hooks/js/useBattery";
 import { useIsTouchDevice } from "./hooks/js/useIsTouchDevice";
-import { useLoadScript } from "./hooks/js/useLoadScript";
-import { classDiagramExample } from "./constants";
+import { useScript } from "./hooks/js/useScript";
 
 function AppJs() {
   const battery = useBattery();
   const isTouchDevice = useIsTouchDevice();
-  const mermaidIsReady = useLoadScript(
+  const mermaidIsReady = useScript(
     "https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"
   );
+  const classDiagramExample = `
+            classDiagram
+            class GeoPointType {
+            <<enumeration>>
+              BROWNFIELD
+              OGWELL
+              CELL_TOWER
+              NUCLEAR_REACTOR
+              SUPERFUND
+            }`;
 
   return (
     <div>
@@ -17,7 +26,12 @@ function AppJs() {
 
       {isTouchDevice ? "It is a touch device" : "It is not a touch device"}
 
-      {mermaidIsReady && <div className="mermaid">{classDiagramExample}</div>}
+      {mermaidIsReady && (
+        <>
+          <h2>Mermaid</h2>
+          <div className="mermaid">{classDiagramExample}</div>
+        </>
+      )}
     </div>
   );
 }

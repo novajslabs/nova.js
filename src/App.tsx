@@ -1,14 +1,24 @@
 import { useBattery } from "./hooks/ts/useBattery";
 import { useIsTouchDevice } from "./hooks/ts/useIsTouchDevice";
-import { useLoadScript } from "./hooks/ts/useLoadScript";
-import { classDiagramExample } from "./constants";
+import { useScript } from "./hooks/ts/useScript";
 
 function AppTs() {
   const battery = useBattery();
   const isTouchDevice = useIsTouchDevice();
-  const mermaidIsReady = useLoadScript(
+  const mermaidIsReady = useScript(
     "https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"
   );
+
+  const classDiagramExample = `
+          classDiagram
+          class GeoPointType {
+          <<enumeration>>
+            BROWNFIELD
+            OGWELL
+            CELL_TOWER
+            NUCLEAR_REACTOR
+            SUPERFUND
+          }`;
   return (
     <div>
       <p>Battery level:{battery.level && battery.level * 100}</p>
@@ -16,7 +26,12 @@ function AppTs() {
 
       {isTouchDevice ? "It is a touch device" : "It is not a touch device"}
 
-      {mermaidIsReady && <div className="mermaid">{classDiagramExample}</div>}
+      {mermaidIsReady && (
+        <>
+          <h2>Mermaid</h2>
+          <div className="mermaid">{classDiagramExample}</div>
+        </>
+      )}
     </div>
   );
 }
