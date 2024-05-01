@@ -1,6 +1,8 @@
 import { useBattery } from "./hooks/js/useBattery";
 import { useIsTouchDevice } from "./hooks/js/useIsTouchDevice";
 import { useScript } from "./hooks/js/useScript";
+import { useRef } from "react";
+import { useOutsideClick } from "./hooks/js/useOutsideClick";
 
 function AppJs() {
   const battery = useBattery();
@@ -19,8 +21,11 @@ function AppJs() {
               SUPERFUND
             }`;
 
+  const testRef = useRef(null);
+  useOutsideClick(testRef, () => console.log("Testing"));
+
   return (
-    <div>
+    <div ref={testRef}>
       <p>Battery level:{battery.level * 100}</p>
       <p>{battery.charging ? "Battery charging" : "Battery not charging"}</p>
 
