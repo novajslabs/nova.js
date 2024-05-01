@@ -5,25 +5,25 @@ export const useScript = (url) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-      const script = document.createElement('script');
-      script.src = url;
-      script.async = true;
+    const script = document.createElement("script");
+    script.src = url;
+    script.async = true;
 
-      script.onload = () => {
-          setLoading(false);
-      };
+    script.onload = () => {
+      setLoading(false);
+    };
 
-      script.onerror = () => {
-          setError(new Error(`Failed to load script ${url}`));
-          setLoading(false);
-      };
+    script.onerror = () => {
+      setError(`Failed to load script ${url}`);
+      setLoading(false);
+    };
 
-      document.body.appendChild(script);
+    document.body.appendChild(script);
 
-      return () => {
-          document.body.removeChild(script);
-      };
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [url]);
 
   return { loading, error };
-}
+};
