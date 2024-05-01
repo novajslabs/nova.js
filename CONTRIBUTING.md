@@ -20,7 +20,7 @@ Before opening a new issue please check existing ones (including closed ones) to
 
 ### Installing prerequisites
 
-You'll need git, a recent version of [Node.js](https://nodejs.org/en/) (v18.X is recommended) and npm, yarn or pnpm (pnpm is recomended).
+You'll need git, a recent version of Node.js (v18.X is recommended) and npm, yarn or pnpm (pnpm is recomended).
 
 ```bash
 git clone https://github.com/novajslabs/nova.js
@@ -33,9 +33,12 @@ pnpm dev
 
 If you want to provide new hooks, fixing errors or improving existing ones, you must comply with the following:
 
-1. You must provide the code in both JavaScript and TypeScript
-2. Cannot have external dependencies
-3. If possible, it should be compatible with React version 16.8
+1. For each hook you must provide the code in both JavaScript and TypeScript
+2. The hook cannot have external dependencies
+3. If possible, the hook should be compatible with React version 16.8
+4. If the hook uses an external function, for example to parse a string, it must be included in the same hook file and not as a separate file
+5. Make sure not to track the files you're using to test the hook
+6. You can modify the App.tsx and App.jsx files to test the hook, but do not track these changes to avoid conflicts
 
 ## Code of Conduct
 
