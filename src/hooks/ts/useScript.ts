@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export const useScript = (url: string) => {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -14,7 +14,7 @@ export const useScript = (url: string) => {
     };
 
     script.onerror = () => {
-      setError(new Error(`Failed to load script ${url}`));
+      setError(`Failed to load script ${url}`);
       setLoading(false);
     };
 
@@ -26,4 +26,4 @@ export const useScript = (url: string) => {
   }, [url]);
 
   return { loading, error };
-}
+};
