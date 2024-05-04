@@ -5,7 +5,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
 
   const [videoState, setVideoState] = useState({
     isPaused: video ? video?.paused : true,
-    isMuted: video ? video?.muted : true,
+    isMuted: video ? video?.muted : false,
     currentVolume: video ? video?.volume : 100,
     currentTime: video ? video?.currentTime : 0,
   });
@@ -49,9 +49,25 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
       setVideoState((prev) => {
         return {
           ...prev,
-          currentVolumen: newVolume * 100,
+          currentVolume: newVolume * 100,
         };
       });
+    }
+  };
+
+  const handleVolumeControl = (e: Event) => {
+    if (e.target) {
+      const newVolume = (e.target as HTMLVideoElement).volume * 100;
+
+      if (newVolume === videoState.currentVolume) {
+        handleMute(video?.muted);
+        return;
+      }
+
+      setVideoState((prev) => ({
+        ...prev,
+        currentVolume: (e.target as HTMLVideoElement).volume * 100,
+      }));
     }
   };
 
@@ -103,15 +119,6 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     };
   }, []);
 
-  const handleVolumeControl = (e: Event) => {
-    if (e.target) {
-      setVideoState((prev) => ({
-        ...prev,
-        currentVolume: (e.target as HTMLVideoElement).volume * 100,
-      }));
-    }
-  };
-
   useEffect(() => {
     if (video) {
       video.addEventListener("volumechange", handleVolumeControl);
@@ -119,7 +126,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
         video.removeEventListener("volumechange", handleVolumeControl);
       };
     }
-  }, []);
+  }, [video]);
 
   return {
     ...videoState,
