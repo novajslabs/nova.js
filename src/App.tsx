@@ -7,7 +7,7 @@ function AppTs() {
   const {
     isPaused,
     isMuted,
-    currentVolumen,
+    currentVolume,
     currentTime,
     play,
     pause,
@@ -24,10 +24,10 @@ function AppTs() {
 
   return (
     <div>
-      <video ref={videoRef} src={videoFile} width={500} height={500} />
+      <video ref={videoRef} src={videoFile} width={500} height={500} controls />
       <p>The video is {isPaused ? "paused" : "playing"}</p>
       <p>The video is {isMuted ? "muted" : "unmuted"}</p>
-      <p>The video volume is {currentVolumen}</p>
+      <p>The video volume is {currentVolume}</p>
       <p>The video current time is {currentTime} seconds</p>
       <button onClick={play}>Play</button>
       <button onClick={pause}>Pause</button>

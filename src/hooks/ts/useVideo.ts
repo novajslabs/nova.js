@@ -4,7 +4,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
   const [videoState, setVideoState] = useState({
     isPaused: ref.current ? ref.current?.paused : true,
     isMuted: ref.current ? ref.current?.muted : true,
-    currentVolumen: ref.current ? ref.current?.volume : 100,
+    currentVolume: ref.current ? ref.current?.volume : 100,
     currentTime: ref.current ? ref.current?.currentTime : 0,
   });
 
@@ -99,6 +99,25 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     return () => {
       pause();
     };
+  }, []);
+
+  const handleVolumeControl = (e: Event) => {
+    if (e.target) {
+      setVideoState((prev) => ({
+        ...prev,
+        currentVolume: (e.target as HTMLVideoElement).volume * 100,
+      }));
+    }
+  };
+
+  useEffect(() => {
+    const videoElement = ref.current;
+    if (videoElement) {
+      videoElement.addEventListener("volumechange", handleVolumeControl);
+      return () => {
+        videoElement.removeEventListener("volumechange", handleVolumeControl);
+      };
+    }
   }, []);
 
   return {
