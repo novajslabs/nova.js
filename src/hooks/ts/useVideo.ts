@@ -65,11 +65,11 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
   };
 
   const handleVolumeControl = (e: Event) => {
-    if (e.target) {
+    if (e.target && video) {
       const newVolume = (e.target as HTMLVideoElement).volume * 100;
 
       if (newVolume === videoState.currentVolume) {
-        handleMute(video?.muted);
+        handleMute(video.muted);
         return;
       }
 
