@@ -112,6 +112,15 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     }
   };
 
+  const handleTimeControl = (e: Event) => {
+    setVideoState((prev) => {
+      return {
+        ...prev,
+        currentTime: (e.target as HTMLVideoElement).currentTime,
+      };
+    });
+  };
+
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       video?.requestFullscreen().catch((err) => {
@@ -133,11 +142,13 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
       video.addEventListener("volumechange", handleVolumeControl);
       video.addEventListener("play", handlePlayPauseControl);
       video.addEventListener("pause", handlePlayPauseControl);
+      video.addEventListener("timeupdate", handleTimeControl);
 
       return () => {
         video.removeEventListener("volumechange", handleVolumeControl);
         video.addEventListener("play", handlePlayPauseControl);
         video.addEventListener("pause", handlePlayPauseControl);
+        video.addEventListener("timeupdate", handleTimeControl);
       };
     }
   }, [video]);
