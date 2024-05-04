@@ -31,6 +31,15 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     });
   };
 
+  const handlePlayPauseControl = (e: Event) => {
+    setVideoState((prev) => {
+      return {
+        ...prev,
+        isPaused: (e.target as HTMLVideoElement).paused,
+      };
+    });
+  };
+
   const togglePause = () => (video?.paused ? play() : pause());
 
   const handleVolume = (delta: number) => {
@@ -122,8 +131,13 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
   useEffect(() => {
     if (video) {
       video.addEventListener("volumechange", handleVolumeControl);
+      video.addEventListener("play", handlePlayPauseControl);
+      video.addEventListener("pause", handlePlayPauseControl);
+
       return () => {
         video.removeEventListener("volumechange", handleVolumeControl);
+        video.addEventListener("play", handlePlayPauseControl);
+        video.addEventListener("pause", handlePlayPauseControl);
       };
     }
   }, [video]);
