@@ -1,26 +1,28 @@
 import { useEffect, useState, RefObject } from "react";
 
 export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
+  const video = ref.current;
+
   const [videoState, setVideoState] = useState({
-    isPaused: ref.current ? ref.current?.paused : true,
-    isMuted: ref.current ? ref.current?.muted : true,
-    currentVolume: ref.current ? ref.current?.volume : 100,
-    currentTime: ref.current ? ref.current?.currentTime : 0,
+    isPaused: video ? video?.paused : true,
+    isMuted: video ? video?.muted : true,
+    currentVolume: video ? video?.volume : 100,
+    currentTime: video ? video?.currentTime : 0,
   });
 
   const play = () => {
-    ref.current?.play();
+    video?.play();
     setVideoState((prev) => {
       return {
         ...prev,
         isPaused: false,
-        isMuted: ref.current ? ref.current.muted : prev.isMuted,
+        isMuted: video ? video.muted : prev.isMuted,
       };
     });
   };
 
   const pause = () => {
-    ref.current?.pause();
+    video?.pause();
     setVideoState((prev) => {
       return {
         ...prev,
@@ -29,13 +31,13 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     });
   };
 
-  const togglePause = () => (ref.current?.paused ? play() : pause());
+  const togglePause = () => (video?.paused ? play() : pause());
 
   const handleVolume = (delta: number) => {
     const deltaDecimal = delta / 100;
 
-    if (ref.current) {
-      let newVolume = ref.current?.volume + deltaDecimal;
+    if (video) {
+      let newVolume = video?.volume + deltaDecimal;
 
       if (newVolume >= 1) {
         newVolume = 1;
@@ -43,7 +45,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
         newVolume = 0;
       }
 
-      ref.current.volume = newVolume;
+      video.volume = newVolume;
       setVideoState((prev) => {
         return {
           ...prev,
@@ -54,8 +56,8 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
   };
 
   const handleMute = (mute: boolean) => {
-    if (ref.current) {
-      ref.current.muted = mute;
+    if (video) {
+      video.muted = mute;
       setVideoState((prev) => {
         return {
           ...prev,
@@ -66,16 +68,16 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
   };
 
   const handleTime = (delta: number = 5) => {
-    if (ref.current) {
-      let newTime = ref.current.currentTime + delta;
+    if (video) {
+      let newTime = video.currentTime + delta;
 
-      if (newTime >= ref.current.duration) {
-        newTime = ref.current.duration;
+      if (newTime >= video.duration) {
+        newTime = video.duration;
       } else if (newTime <= 0) {
         newTime = 0;
       }
 
-      ref.current.currentTime = newTime;
+      video.currentTime = newTime;
       setVideoState((prev) => {
         return {
           ...prev,
@@ -87,7 +89,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
-      ref.current?.requestFullscreen().catch((err) => {
+      video?.requestFullscreen().catch((err) => {
         console.log(err);
       });
     } else {
@@ -111,11 +113,10 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
   };
 
   useEffect(() => {
-    const videoElement = ref.current;
-    if (videoElement) {
-      videoElement.addEventListener("volumechange", handleVolumeControl);
+    if (video) {
+      video.addEventListener("volumechange", handleVolumeControl);
       return () => {
-        videoElement.removeEventListener("volumechange", handleVolumeControl);
+        video.removeEventListener("volumechange", handleVolumeControl);
       };
     }
   }, []);
@@ -129,7 +130,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     decreaseVolume: (decrease: number = 5) => handleVolume(decrease * -1),
     mute: () => handleMute(true),
     unmute: () => handleMute(false),
-    toggleMute: () => handleMute(!ref.current?.muted),
+    toggleMute: () => handleMute(!video?.muted),
     forward: (increase: number = 5) => handleTime(increase),
     back: (decrease: number = 5) => handleTime(decrease * -1),
     toggleFullscreen,
