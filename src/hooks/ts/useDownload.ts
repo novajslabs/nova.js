@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-export const useDownloadFile = () => {
-  const [error, setError] = useState(null);
-  const [isDownloading, setIsDownloading] = useState(false);
+export const useDownload = () => {
+  const [error, setError] = useState<Error | unknown | null>(null);
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
-  const handleResponse = async (response) => {
+  const handleResponse = async (response: Response): Promise<string> => {
     if (!response.ok) {
       throw new Error("Could not download file");
     }
@@ -15,7 +15,7 @@ export const useDownloadFile = () => {
     return url;
   };
 
-  const handleDownload = (fileName, url) => {
+  const handleDownload = (fileName: string, url: string) => {
     const link = document.createElement("a");
 
     link.href = url;
@@ -26,7 +26,7 @@ export const useDownloadFile = () => {
     window.URL.revokeObjectURL(url);
   };
 
-  const downloadFile = async (fileName, fileUrl) => {
+  const downloadFile = async (fileName: string, fileUrl: string) => {
     setIsDownloading(true);
 
     try {
