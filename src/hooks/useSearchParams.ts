@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 type TUseSearchParams = ( url?: string, opt?: { unique: boolean } ) => Record<string, any>
-export const useSearchParams: TUseSearchParams = ( url = location.search, opt = { unique: true } ) => {
+export const useSearchParams: TUseSearchParams = ( url = location.href, opt = { unique: true } ) => {
   const _urlSearch = new URL(url)
   const [ params, setParams ] = useState< Record< string, any > >( () => Object.fromEntries( _urlSearch.searchParams.entries() ) );
 
