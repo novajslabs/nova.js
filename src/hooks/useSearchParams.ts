@@ -11,9 +11,9 @@ export const useSearchParams: TUseSearchParams = ( url = location.href, opt = { 
     for( const [key, value] of _urlSearch.searchParams ){
       if( value === params?.[key] ) continue;
       if( Array.isArray(params?.[key]) && Array.from(params?.[key]).includes(value) ) continue;
-      setParams( { ...params, [key]: [ ...params?.[key], value] } )
+      setParams( () => ({ ...params, [key]: [ ...params?.[key], value] }) )
     }
   }, [] )
 
-  return params;
+  return Object.fromEntries( Object.entries(params).map(([key, value]) => ( [key, !Array.isArray(value) ? JSON.parse(value) : value.map( (items) => JSON.parse(items) )] )) )
 }
