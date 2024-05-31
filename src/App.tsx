@@ -1,7 +1,7 @@
 import React from "react";
 
-const AppTs = () => {
+const App = () => {
   return <p>Test your hook here</p>;
 };
 
-export default AppTs;
+export default App;
