@@ -6,19 +6,19 @@ interface IShareData {
 }
 
 const errorMessages: Record<string, string> = {
-  NotAllowedError: 'Permiso para compartir denegado.',
-  AbortError: 'La acción de compartir fue abortada.',
-  NotSupportedError: 'Tu navegador no soporta la función de compartir.',
-  TypeError: 'Error al compartir: tipo de dato incorrecto.'
+  NotAllowedError: 'Permission to share denied.',
+  AbortError: 'The sharing action was aborted.',
+  NotSupportedError: 'Your browser does not support the sharing feature.',
+  TypeError: 'Error while sharing: incorrect data type.'
 }
 
 function checkPermission (files?: File[]) {
   if (!navigator.canShare) {
-    throw new Error('Tu navegador no soporta la función de compartir.')
+    throw new Error('Your browser does not support the sharing feature.')
   }
 
-  if (!navigator.canShare({ files } ?? { files: [new File([], '')] })) {
-    throw new Error(`Tu navegador no permite compartir ${files ? 'este tipo de ' : ''} archivos.`)
+  if (!navigator.canShare({ files } || { files: [new File([], '')] })) {
+    throw new Error(`Your browser does not allow sharing ${files ? 'this type of ' : ''} files.`)
   }
 }
 
@@ -28,7 +28,7 @@ function surroundTryCatch (fn: (data: IShareData) => void | Promise<void>) {
       await fn(data)
     } catch (error: unknown) {
       if ((error as Error).name in errorMessages) {
-        const message = `Error al compartir: ${errorMessages[(error as Error).name]}`
+        const message = `Error while sharing: ${errorMessages[(error as Error).name]}`
         console.error(message)
       } else {
         throw error
