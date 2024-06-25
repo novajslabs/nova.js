@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export const useClipboard = () => {
-  const [copiedText, setCopiedText] = useState<string | null>("");
+  const [copiedText, setCopiedText] = useState<string | null>('');
 
   const copyToClipboard = (value: string) => {
     return new Promise<string>((resolve, reject) => {
@@ -19,7 +19,7 @@ export const useClipboard = () => {
             });
         } else {
           setCopiedText(null);
-          throw new Error("Clipboard not supported");
+          throw new Error('Clipboard not supported');
         }
       } catch (e) {
         reject(e);

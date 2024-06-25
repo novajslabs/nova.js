@@ -1,4 +1,4 @@
-import { useEffect, useState, RefObject } from "react";
+import { useEffect, useState, RefObject } from 'react';
 
 export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
   const audio = ref.current;
@@ -7,7 +7,7 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
     isPaused: audio ? audio?.paused : true,
     isMuted: audio ? audio?.muted : false,
     currentVolume: audio ? audio?.volume : 100,
-    currentTime: audio ? audio?.currentTime : 0,
+    currentTime: audio ? audio?.currentTime : 0
   });
 
   const play = () => {
@@ -16,7 +16,7 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
       return {
         ...prev,
         isPaused: false,
-        isMuted: audio ? audio.muted : prev.isMuted,
+        isMuted: audio ? audio.muted : prev.isMuted
       };
     });
   };
@@ -26,7 +26,7 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
     setAudioState((prev) => {
       return {
         ...prev,
-        isPaused: true,
+        isPaused: true
       };
     });
   };
@@ -35,7 +35,7 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
     setAudioState((prev) => {
       return {
         ...prev,
-        isPaused: (e.target as HTMLAudioElement).paused,
+        isPaused: (e.target as HTMLAudioElement).paused
       };
     });
   };
@@ -58,7 +58,7 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
       setAudioState((prev) => {
         return {
           ...prev,
-          currentVolume: newVolume * 100,
+          currentVolume: newVolume * 100
         };
       });
     }
@@ -71,7 +71,7 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
       handleMute(audio.muted);
       setAudioState((prev) => ({
         ...prev,
-        currentVolume: newVolume,
+        currentVolume: newVolume
       }));
     }
   };
@@ -82,7 +82,7 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
       setAudioState((prev) => {
         return {
           ...prev,
-          isMuted: mute,
+          isMuted: mute
         };
       });
     }
@@ -102,7 +102,7 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
       setAudioState((prev) => {
         return {
           ...prev,
-          currentTime: newTime,
+          currentTime: newTime
         };
       });
     }
@@ -112,7 +112,7 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
     setAudioState((prev) => {
       return {
         ...prev,
-        currentTime: (e.target as HTMLAudioElement).currentTime,
+        currentTime: (e.target as HTMLAudioElement).currentTime
       };
     });
   };
@@ -125,16 +125,16 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
 
   useEffect(() => {
     if (audio) {
-      audio.addEventListener("volumechange", handleVolumeControl);
-      audio.addEventListener("play", handlePlayPauseControl);
-      audio.addEventListener("pause", handlePlayPauseControl);
-      audio.addEventListener("timeupdate", handleTimeControl);
+      audio.addEventListener('volumechange', handleVolumeControl);
+      audio.addEventListener('play', handlePlayPauseControl);
+      audio.addEventListener('pause', handlePlayPauseControl);
+      audio.addEventListener('timeupdate', handleTimeControl);
 
       return () => {
-        audio.removeEventListener("volumechange", handleVolumeControl);
-        audio.addEventListener("play", handlePlayPauseControl);
-        audio.addEventListener("pause", handlePlayPauseControl);
-        audio.addEventListener("timeupdate", handleTimeControl);
+        audio.removeEventListener('volumechange', handleVolumeControl);
+        audio.addEventListener('play', handlePlayPauseControl);
+        audio.addEventListener('pause', handlePlayPauseControl);
+        audio.addEventListener('timeupdate', handleTimeControl);
       };
     }
   }, [audio]);
@@ -150,6 +150,6 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
     unmute: () => handleMute(false),
     toggleMute: () => handleMute(!audio?.muted),
     forward: (increase: number = 5) => handleTime(increase),
-    back: (decrease: number = 5) => handleTime(decrease * -1),
+    back: (decrease: number = 5) => handleTime(decrease * -1)
   };
 };

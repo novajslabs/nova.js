@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export const useInput = <T>(initialValue: T) => {
   const [inputValue, setInputValue] = useState(initialValue);

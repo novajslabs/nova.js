@@ -1,4 +1,4 @@
-import { useEffect, MutableRefObject } from "react";
+import { useEffect, MutableRefObject } from 'react';
 
 export const useOutsideClick = (
   ref: MutableRefObject<HTMLElement | null>,
@@ -11,10 +11,10 @@ export const useOutsideClick = (
       }
     };
 
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener('click', handleClickOutside);
     };
   }, [ref, fn]);
 };

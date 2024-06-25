@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export const useDownload = () => {
   const [error, setError] = useState<Error | unknown | null>(null);
@@ -6,7 +6,7 @@ export const useDownload = () => {
 
   const handleResponse = async (response: Response): Promise<string> => {
     if (!response.ok) {
-      throw new Error("Could not download file");
+      throw new Error('Could not download file');
     }
 
     const blob = await response.blob();
@@ -16,10 +16,10 @@ export const useDownload = () => {
   };
 
   const handleDownload = (fileName: string, url: string) => {
-    const link = document.createElement("a");
+    const link = document.createElement('a');
 
     link.href = url;
-    link.setAttribute("download", fileName);
+    link.setAttribute('download', fileName);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -44,6 +44,6 @@ export const useDownload = () => {
   return {
     error,
     isDownloading,
-    downloadFile,
+    downloadFile
   };
 };

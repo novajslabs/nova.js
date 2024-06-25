@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 const parseTime = (time: string) => {
-  const splitTime = time.split(":");
+  const splitTime = time.split(':');
 
   const [days, hours, minutes, seconds] = splitTime.map((value) =>
     Number(value)
@@ -11,7 +11,7 @@ const parseTime = (time: string) => {
 };
 
 const addLeadingZero = (digit: number): string => {
-  let timeStr = "";
+  let timeStr = '';
 
   digit % 10 === digit ? (timeStr += `0${digit}`) : (timeStr += `${digit}`);
 
@@ -38,7 +38,7 @@ export const useTimer = (startTime: string): Timer => {
   const { days, hours, minutes, seconds } = parseTime(startTime);
   const [time, setTime] = useState({ days, hours, minutes, seconds });
   const [paused, setPaused] = useState(false);
-  const divider = ":";
+  const divider = ':';
   const [isOver, setIsOver] = useState(false);
 
   useEffect(() => {
@@ -121,6 +121,6 @@ export const useTimer = (startTime: string): Timer => {
     },
     togglePause: () => {
       setPaused(!paused);
-    },
+    }
   };
 };

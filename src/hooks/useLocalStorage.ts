@@ -1,11 +1,11 @@
-import { useEffect, useSyncExternalStore, useCallback } from "react";
+import { useEffect, useSyncExternalStore, useCallback } from 'react';
 
 const isFunction = <T>(
   value: T | ((prevState: T) => T)
-): value is (prevState: T) => T => typeof value === "function";
+): value is (prevState: T) => T => typeof value === 'function';
 
 const dispatchStorageEvent = (key: string, newValue: string | null) =>
-  window.dispatchEvent(new StorageEvent("storage", { key, newValue }));
+  window.dispatchEvent(new StorageEvent('storage', { key, newValue }));
 
 const getLocalStorageItem = (key: string) => window.localStorage.getItem(key);
 
@@ -21,8 +21,8 @@ const removeLocalStorageItem = (key: string) => {
 };
 
 const localStorageSubscribe = (cb: () => void) => {
-  window.addEventListener("storage", cb);
-  return () => window.removeEventListener("storage", cb);
+  window.addEventListener('storage', cb);
+  return () => window.removeEventListener('storage', cb);
 };
 
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
@@ -55,7 +55,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
   useEffect(() => {
     if (
       getLocalStorageItem(key) === null &&
-      typeof initialValue !== "undefined"
+      typeof initialValue !== 'undefined'
     ) {
       setLocalStorageItem(key, initialValue);
     }
@@ -64,6 +64,6 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
   return {
     current: store ? JSON.parse(store) : initialValue,
     setItemValue: setState,
-    removeItem: () => removeLocalStorageItem(key),
+    removeItem: () => removeLocalStorageItem(key)
   };
 };

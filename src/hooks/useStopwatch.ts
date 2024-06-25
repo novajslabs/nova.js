@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 const addLeadingZero = (digit: number): string => {
-  let timeStr = "";
+  let timeStr = '';
 
   digit % 10 === digit ? (timeStr += `0${digit}`) : (timeStr += `${digit}`);
 
@@ -28,10 +28,10 @@ export const useStopwatch = (): Stopwatch => {
     days: 0,
     hours: 0,
     minutes: 0,
-    seconds: 0,
+    seconds: 0
   });
   const [paused, setPaused] = useState(false);
-  const divider = ":";
+  const divider = ':';
   const [isOver, setIsOver] = useState(false);
 
   useEffect(() => {
@@ -92,6 +92,6 @@ export const useStopwatch = (): Stopwatch => {
     },
     togglePause: () => {
       setPaused(!paused);
-    },
+    }
   };
 };
