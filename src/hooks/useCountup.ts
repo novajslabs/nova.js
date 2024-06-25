@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 interface Counter {
   current: string;
@@ -45,6 +45,6 @@ export const useCountup = (min: number, max: number): Counter => {
     },
     togglePause: () => {
       setPaused(!paused);
-    },
+    }
   };
 };

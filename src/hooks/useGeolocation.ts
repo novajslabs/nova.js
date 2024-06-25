@@ -19,7 +19,7 @@ export function useGeolocation(defaultPosition: Payload | null = null) {
       (pos) => {
         setPosition({
           lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
+          lng: pos.coords.longitude
         });
         setIsLoading(false);
       },

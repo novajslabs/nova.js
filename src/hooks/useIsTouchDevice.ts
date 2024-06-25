@@ -7,8 +7,8 @@ export function useIsTouchDevice() {
     function onResize() {
       setIsTouchDevice(
         'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        navigator.maxTouchPoints > 0
+          navigator.maxTouchPoints > 0 ||
+          navigator.maxTouchPoints > 0
       );
     }
 

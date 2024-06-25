@@ -1,4 +1,4 @@
-import { useEffect, useState, RefObject } from "react";
+import { useEffect, useState, RefObject } from 'react';
 
 export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
   const video = ref.current;
@@ -7,7 +7,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     isPaused: video ? video?.paused : true,
     isMuted: video ? video?.muted : false,
     currentVolume: video ? video?.volume : 100,
-    currentTime: video ? video?.currentTime : 0,
+    currentTime: video ? video?.currentTime : 0
   });
 
   const play = () => {
@@ -16,7 +16,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
       return {
         ...prev,
         isPaused: false,
-        isMuted: video ? video.muted : prev.isMuted,
+        isMuted: video ? video.muted : prev.isMuted
       };
     });
   };
@@ -26,7 +26,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     setVideoState((prev) => {
       return {
         ...prev,
-        isPaused: true,
+        isPaused: true
       };
     });
   };
@@ -35,7 +35,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     setVideoState((prev) => {
       return {
         ...prev,
-        isPaused: (e.target as HTMLVideoElement).paused,
+        isPaused: (e.target as HTMLVideoElement).paused
       };
     });
   };
@@ -58,7 +58,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
       setVideoState((prev) => {
         return {
           ...prev,
-          currentVolume: newVolume * 100,
+          currentVolume: newVolume * 100
         };
       });
     }
@@ -75,7 +75,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
 
       setVideoState((prev) => ({
         ...prev,
-        currentVolume: (e.target as HTMLVideoElement).volume * 100,
+        currentVolume: (e.target as HTMLVideoElement).volume * 100
       }));
     }
   };
@@ -86,7 +86,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
       setVideoState((prev) => {
         return {
           ...prev,
-          isMuted: mute,
+          isMuted: mute
         };
       });
     }
@@ -106,7 +106,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
       setVideoState((prev) => {
         return {
           ...prev,
-          currentTime: newTime,
+          currentTime: newTime
         };
       });
     }
@@ -116,7 +116,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     setVideoState((prev) => {
       return {
         ...prev,
-        currentTime: (e.target as HTMLVideoElement).currentTime,
+        currentTime: (e.target as HTMLVideoElement).currentTime
       };
     });
   };
@@ -139,16 +139,16 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
 
   useEffect(() => {
     if (video) {
-      video.addEventListener("volumechange", handleVolumeControl);
-      video.addEventListener("play", handlePlayPauseControl);
-      video.addEventListener("pause", handlePlayPauseControl);
-      video.addEventListener("timeupdate", handleTimeControl);
+      video.addEventListener('volumechange', handleVolumeControl);
+      video.addEventListener('play', handlePlayPauseControl);
+      video.addEventListener('pause', handlePlayPauseControl);
+      video.addEventListener('timeupdate', handleTimeControl);
 
       return () => {
-        video.removeEventListener("volumechange", handleVolumeControl);
-        video.addEventListener("play", handlePlayPauseControl);
-        video.addEventListener("pause", handlePlayPauseControl);
-        video.addEventListener("timeupdate", handleTimeControl);
+        video.removeEventListener('volumechange', handleVolumeControl);
+        video.addEventListener('play', handlePlayPauseControl);
+        video.addEventListener('pause', handlePlayPauseControl);
+        video.addEventListener('timeupdate', handleTimeControl);
       };
     }
   }, [video]);
@@ -165,6 +165,6 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     toggleMute: () => handleMute(!video?.muted),
     forward: (increase: number = 5) => handleTime(increase),
     back: (decrease: number = 5) => handleTime(decrease * -1),
-    toggleFullscreen,
+    toggleFullscreen
   };
 };

@@ -1,8 +1,8 @@
-import { useSyncExternalStore } from "react";
+import { useSyncExternalStore } from 'react';
 
 const langSubscribe = (cb: () => void) => {
-  window.addEventListener("languagechange", cb);
-  return () => window.removeEventListener("languagechange", cb);
+  window.addEventListener('languagechange', cb);
+  return () => window.removeEventListener('languagechange', cb);
 };
 
 const getLang = () => navigator.language;

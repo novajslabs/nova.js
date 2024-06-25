@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 interface BatteryManager {
   level: number;
@@ -37,7 +37,7 @@ export const useBattery = () => {
     level: null,
     charging: null,
     chargingTime: null,
-    dischargingTime: null,
+    dischargingTime: null
   });
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const useBattery = () => {
         level: battery.level,
         charging: battery.charging,
         chargingTime: battery.chargingTime,
-        dischargingTime: battery.dischargingTime,
+        dischargingTime: battery.dischargingTime
       });
     };
 
@@ -59,7 +59,7 @@ export const useBattery = () => {
       setBatteryState((batteryState) => ({
         ...batteryState,
         supported: false,
-        loading: false,
+        loading: false
       }));
       return;
     }
@@ -68,19 +68,19 @@ export const useBattery = () => {
       battery = _battery;
       handleBatteryChange();
 
-      _battery.addEventListener("levelchange", handleBatteryChange);
-      _battery.addEventListener("chargingchange", handleBatteryChange);
-      _battery.addEventListener("chargingtimechange", handleBatteryChange);
-      _battery.addEventListener("dischargingtimechange", handleBatteryChange);
+      _battery.addEventListener('levelchange', handleBatteryChange);
+      _battery.addEventListener('chargingchange', handleBatteryChange);
+      _battery.addEventListener('chargingtimechange', handleBatteryChange);
+      _battery.addEventListener('dischargingtimechange', handleBatteryChange);
     });
 
     return () => {
       if (battery) {
-        battery.removeEventListener("levelchange", handleBatteryChange);
-        battery.removeEventListener("chargingchange", handleBatteryChange);
-        battery.removeEventListener("chargingtimechange", handleBatteryChange);
+        battery.removeEventListener('levelchange', handleBatteryChange);
+        battery.removeEventListener('chargingchange', handleBatteryChange);
+        battery.removeEventListener('chargingtimechange', handleBatteryChange);
         battery.removeEventListener(
-          "dischargingtimechange",
+          'dischargingtimechange',
           handleBatteryChange
         );
       }
