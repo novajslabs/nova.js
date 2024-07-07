@@ -1,11 +1,3 @@
-/**
- * usePrevious.ts
- *
- * The usePrevious is a custom hook that allows a component to keep track of the previous
- * value of a variable. This is useful when you want to compare the current value of a variable
- * with its previous value.
- */
-
 import { useRef } from 'react';
 
 export default function usePrevious<T>(value: T): T | undefined {
