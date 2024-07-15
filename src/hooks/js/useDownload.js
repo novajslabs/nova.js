@@ -3,16 +3,58 @@ import { useState } from 'react';
 export const useDownload = () => {
   const [error, setError] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [progress, setProgress] = useState(null);
 
   const handleResponse = async (response) => {
     if (!response.ok) {
       throw new Error('Could not download file');
     }
 
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(new Blob([blob]));
+    const contentLength = response.headers.get('content-length');
+    const reader = response.clone().body?.getReader();
 
-    return url;
+    if (!contentLength || !reader) {
+      const blob = await response.blob();
+
+      return createBlobURL(blob);
+    }
+
+    const stream = await getStream(contentLength, reader);
+    const newResponse = new Response(stream);
+    const blob = await newResponse.blob();
+
+    return createBlobURL(blob);
+  };
+
+  const getStream = async (contentLength, reader) => {
+    let loaded = 0;
+    const total = parseInt(contentLength, 10);
+
+    return new ReadableStream({
+      async start(controller) {
+        try {
+          for (;;) {
+            const { done, value } = await reader.read();
+
+            if (done) break;
+
+            loaded += value.byteLength;
+            const percentage = Math.trunc((loaded / total) * 100);
+            setProgress(percentage);
+            controller.enqueue(value);
+          }
+        } catch (error) {
+          controller.error(error);
+          throw error;
+        } finally {
+          controller.close();
+        }
+      }
+    });
+  };
+
+  const createBlobURL = (blob) => {
+    return window.URL.createObjectURL(new Blob([blob]));
   };
 
   const handleDownload = (fileName, url) => {
@@ -28,6 +70,8 @@ export const useDownload = () => {
 
   const downloadFile = async (fileName, fileUrl) => {
     setIsDownloading(true);
+    setError(null);
+    setProgress(null);
 
     try {
       const response = await fetch(fileUrl);
@@ -44,6 +88,7 @@ export const useDownload = () => {
   return {
     error,
     isDownloading,
+    progress,
     downloadFile
   };
 };
