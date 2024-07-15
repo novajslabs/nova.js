@@ -57,7 +57,7 @@ export const useDownload = () => {
   };
 
   const createBlobURL = (blob: Blob): string => {
-    return window.URL.createObjectURL(new Blob([blob]));
+    return window.URL.createObjectURL(blob);
   };
 
   const handleDownload = (fileName: string, url: string) => {
