@@ -146,9 +146,9 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
 
       return () => {
         video.removeEventListener('volumechange', handleVolumeControl);
-        video.addEventListener('play', handlePlayPauseControl);
-        video.addEventListener('pause', handlePlayPauseControl);
-        video.addEventListener('timeupdate', handleTimeControl);
+        video.removeEventListener('play', handlePlayPauseControl);
+        video.removeEventListener('pause', handlePlayPauseControl);
+        video.removeEventListener('timeupdate', handleTimeControl);
       };
     }
   }, [video]);
