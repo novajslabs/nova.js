@@ -132,9 +132,9 @@ export const useAudio = (ref) => {
 
       return () => {
         audio.removeEventListener('volumechange', handleVolumeControl);
-        audio.addEventListener('play', handlePlayPauseControl);
-        audio.addEventListener('pause', handlePlayPauseControl);
-        audio.addEventListener('timeupdate', handleTimeControl);
+        audio.removeEventListener('play', handlePlayPauseControl);
+        audio.removeEventListener('pause', handlePlayPauseControl);
+        audio.removeEventListener('timeupdate', handleTimeControl);
       };
     }
   }, [audio]);
