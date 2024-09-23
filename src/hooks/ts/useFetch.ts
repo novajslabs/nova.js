@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 // Define the interface for the data returned by the API.
 interface Data {}
@@ -11,7 +11,6 @@ export const useFetch = (url: string, reqOpt?: RequestInit) => {
   const [error, setError] = useState<Error>();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const effectRan = useRef(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -41,11 +40,7 @@ export const useFetch = (url: string, reqOpt?: RequestInit) => {
   };
 
   useEffect(() => {
-    !effectRan.current && fetchData();
-
-    return () => {
-      effectRan.current = true;
-    };
+    fetchData();
   }, []);
 
   const refetch = () => fetchData();
