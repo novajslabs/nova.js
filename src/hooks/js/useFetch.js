@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 export const useFetch = (url, reqOpt) => {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const effectRan = useRef(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -35,11 +34,7 @@ export const useFetch = (url, reqOpt) => {
   };
 
   useEffect(() => {
-    !effectRan.current && fetchData();
-
-    return () => {
-      effectRan.current = true;
-    };
+    fetchData();
   }, []);
 
   const refetch = () => fetchData();
