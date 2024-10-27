@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useTitle } from '../../../hooks/ts/useTitle.ts';
 
+interface Notification {
+  id: number;
+  text: string;
+}
+
 // Simulate an API call that returns a list of notifications
 const fetchNotifications = () => {
-  return new Promise<{ id: number; text: string }[]>((resolve) => {
+  return new Promise<Notification[]>((resolve) => {
     setTimeout(() => {
       resolve([
         { id: 1, text: 'Notification 1' },
@@ -17,9 +22,7 @@ const fetchNotifications = () => {
 };
 
 export const Notifications = () => {
-  const [notifications, setNotifications] = useState<
-    { id: number; text: string }[]
-  >([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const { title, changeTitle } = useTitle();
 
   useEffect(() => {
