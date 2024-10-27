@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTitle } from '../../../hooks/js/useTitle';
 
-const Tasks = [
+const appTasks = [
   { id: 1, title: 'Task 1', isDone: false },
   { id: 2, title: 'Task 2', isDone: false },
   { id: 3, title: 'Task 3', isDone: false },
@@ -10,11 +10,12 @@ const Tasks = [
 ];
 
 export const ToDoList = () => {
-  const [tasks, setTasks] = useState(Tasks);
+  const [tasks, setTasks] = useState(appTasks);
   const { changeTitle } = useTitle();
 
   useEffect(() => {
-    changeTitle(`${tasks.length} pending tasks`);
+    const unfinishedTasks = tasks.filter((task) => !task.isDone).length;
+    changeTitle(`${unfinishedTasks} pending tasks`);
   }, []);
 
   // Handle check/uncheck task

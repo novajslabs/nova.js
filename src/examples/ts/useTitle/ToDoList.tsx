@@ -7,7 +7,7 @@ interface Task {
   isDone: boolean;
 }
 
-const Tasks: Task[] = [
+const appTasks: Task[] = [
   { id: 1, title: 'Task 1', isDone: false },
   { id: 2, title: 'Task 2', isDone: false },
   { id: 3, title: 'Task 3', isDone: false },
@@ -16,11 +16,12 @@ const Tasks: Task[] = [
 ];
 
 export const ToDoList = () => {
-  const [tasks, setTasks] = useState<Task[]>(Tasks);
+  const [tasks, setTasks] = useState<Task[]>(appTasks);
   const { changeTitle } = useTitle();
 
   useEffect(() => {
-    changeTitle(`${tasks.length} pending tasks`);
+    const unfinishedTasks = tasks.filter((task) => !task.isDone).length;
+    changeTitle(`${unfinishedTasks} pending tasks`);
   }, []);
 
   // Handle check/uncheck task
