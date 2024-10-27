@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export const useTitle = () => {
   const [title, setTitle] = useState(document.title);
 
-  useEffect(() => {
-    document.title = title;
-  }, [title]);
-
-  const changeTitle = (newTitle) => setTitle(newTitle);
+  const changeTitle = (newTitle) => {
+    document.title = newTitle;
+    setTitle(newTitle);
+  }
 
   return { title, changeTitle };
 };
