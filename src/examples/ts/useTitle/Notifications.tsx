@@ -28,7 +28,7 @@ export const Notifications = () => {
   useEffect(() => {
     fetchNotifications().then((notifications) => {
       setNotifications(notifications);
-      changeTitle(`${title} (${notifications.length})`);
+      changeTitle(`Notifications (${notifications.length})`);
     });
   }, []);
 
