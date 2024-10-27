@@ -7,30 +7,20 @@ interface Task {
   isDone: boolean;
 }
 
-// Simulate an API call that returns a list of tasks
-const fetchTasks = () => {
-  return new Promise<Task[]>((resolve) => {
-    setTimeout(() => {
-      resolve([
-        { id: 1, title: 'Task 1', isDone: false },
-        { id: 2, title: 'Task 2', isDone: false },
-        { id: 3, title: 'Task 3', isDone: false },
-        { id: 4, title: 'Task 4', isDone: false },
-        { id: 5, title: 'Task 5', isDone: false }
-      ]);
-    }, 1000);
-  });
-};
+const Tasks: Task[] = [
+  { id: 1, title: 'Task 1', isDone: false },
+  { id: 2, title: 'Task 2', isDone: false },
+  { id: 3, title: 'Task 3', isDone: false },
+  { id: 4, title: 'Task 4', isDone: false },
+  { id: 5, title: 'Task 5', isDone: false }
+];
 
 export const ToDoList = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>(Tasks);
   const { changeTitle } = useTitle();
 
   useEffect(() => {
-    fetchTasks().then((tasks) => {
-      setTasks(tasks);
-      changeTitle(`${tasks.length} pending tasks`);
-    });
+    changeTitle(`${tasks.length} pending tasks`);
   }, []);
 
   // Handle check/uncheck task

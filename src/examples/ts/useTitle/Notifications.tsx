@@ -3,33 +3,24 @@ import { useTitle } from '../../../hooks/ts/useTitle.ts';
 
 interface Notification {
   id: number;
-  text: string;
+  title: string;
 }
 
-// Simulate an API call that returns a list of notifications
-const fetchNotifications = () => {
-  return new Promise<Notification[]>((resolve) => {
-    setTimeout(() => {
-      resolve([
-        { id: 1, text: 'Notification 1' },
-        { id: 2, text: 'Notification 2' },
-        { id: 3, text: 'Notification 3' },
-        { id: 4, text: 'Notification 4' },
-        { id: 5, text: 'Notification 5' }
-      ]);
-    }, 1000);
-  });
-};
+const appNotifications: Notification[] = [
+  { id: 1, title: 'Notification 1' },
+  { id: 2, title: 'Notification 2' },
+  { id: 3, title: 'Notification 3' },
+  { id: 4, title: 'Notification 4' },
+  { id: 5, title: 'Notification 5' }
+];
 
 export const Notifications = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] =
+    useState<Notification[]>(appNotifications);
   const { title, changeTitle } = useTitle();
 
   useEffect(() => {
-    fetchNotifications().then((notifications) => {
-      setNotifications(notifications);
-      changeTitle(`Notifications (${notifications.length})`);
-    });
+    changeTitle(`${title} (${notifications.length})`);
   }, []);
 
   // Delete notification
@@ -53,7 +44,7 @@ export const Notifications = () => {
       <ul>
         {notifications.map((notification) => (
           <li key={notification.id}>
-            {notification.text}
+            {notification.title}
             <button onClick={() => deleteNotification(notification.id)}>
               Delete
             </button>
