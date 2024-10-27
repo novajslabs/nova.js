@@ -1,15 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useTitle } from '../../../hooks/ts/useTitle';
-
-interface Task {
-  id: number;
-  title: string;
-  isDone: boolean;
-}
+import { useTitle } from '../../../hooks/js/useTitle';
 
 // Simulate an API call that returns a list of tasks
 const fetchTasks = () => {
-  return new Promise<Task[]>((resolve) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve([
         { id: 1, title: 'Task 1', isDone: false },
@@ -23,7 +17,7 @@ const fetchTasks = () => {
 };
 
 export const ToDoList = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState([]);
   const { changeTitle } = useTitle();
 
   useEffect(() => {
@@ -34,7 +28,7 @@ export const ToDoList = () => {
   }, []);
 
   // Handle check/uncheck task
-  const checkTask = (id: number, isDone: boolean) => {
+  const checkTask = (id, isDone) => {
     const updatedTasks = tasks.map((task) =>
       task.id === id ? { ...task, isDone } : task
     );
