@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-export const useRandomColor = () => {
-  const [color, setColor] = useState('#000000');
+export const useRandomColor = (initialColor) => {
+  const [color, setColor] = useState(initialColor ?? '#000000');
 
   const generateColor = () => {
     const newColor =
