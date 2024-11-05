@@ -24,7 +24,7 @@ export const useMeasure = () => {
 
         return () => {
             if (elementRef.current) {
-                observer.disconnect()
+                observer.unobserve(elementRef.current)
             }
         }
     }, [])
