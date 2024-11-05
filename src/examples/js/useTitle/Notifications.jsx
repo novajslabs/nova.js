@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTitle } from '../../../hooks/js/useTitle.js';
+import { useTitle } from '../../../hooks/js/useTitle';
 
 const appNotifications = [
   { id: 1, title: 'Notification 1' },

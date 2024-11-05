@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTitle } from '../../../hooks/ts/useTitle.ts';
+import { useTitle } from '../../../hooks/ts/useTitle';
 
 interface Notification {
   id: number;
