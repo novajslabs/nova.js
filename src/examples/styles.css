@@ -1,0 +1,13 @@
+/* LabelWithRandomColor */
+.container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.label {
+    padding: 0 0.5rem;
+    border-radius: 1rem;
+    color: #fff;
+    width: fit-content;
+}
