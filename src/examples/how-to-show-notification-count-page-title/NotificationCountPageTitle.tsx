@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTitle } from '../../../hooks/ts/useTitle';
+import { useTitle } from '../../hooks/ts/useTitle';
 
 interface Notification {
   id: number;
@@ -14,7 +14,7 @@ const appNotifications: Notification[] = [
   { id: 5, title: 'Notification 5' }
 ];
 
-export const Notifications = () => {
+export const NotificationCountPageTitle = () => {
   const [notifications, setNotifications] =
     useState<Notification[]>(appNotifications);
   const { title, changeTitle } = useTitle();
