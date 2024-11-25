@@ -1,7 +1,14 @@
-import { useRandomColor } from '../../../hooks/js/useRandomColor';
+import { useRandomColor } from '../../hooks/ts/useRandomColor';
 import { useState } from 'react';
+import './styles.css';
 
-const Label = ({ color, name }) => {
+interface Label {
+  id: string;
+  name: string;
+  color: string;
+}
+
+const Label = ({ color, name }: { color: string; name: string }) => {
   return (
     <div style={{ backgroundColor: color }} className="label">
       {name}
@@ -11,8 +18,8 @@ const Label = ({ color, name }) => {
 
 export const LabelWithRandomColor = () => {
   const { color: labelColor, generateColor } = useRandomColor();
-  const [labelName, setLabelName] = useState('Label');
-  const [labels, setLabels] = useState([]);
+  const [labelName, setLabelName] = useState<string>('Label');
+  const [labels, setLabels] = useState<Label[]>([]);
 
   const addLabel = () => {
     const nameExists = labels.some((tag) => tag.name === labelName);

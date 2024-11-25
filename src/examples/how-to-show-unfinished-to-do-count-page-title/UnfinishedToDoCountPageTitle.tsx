@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useTitle } from '../../../hooks/js/useTitle';
+import { useTitle } from '../../hooks/ts/useTitle';
 
-const appTasks = [
+interface Task {
+  id: number;
+  title: string;
+  isDone: boolean;
+}
+
+const appTasks: Task[] = [
   { id: 1, title: 'Task 1', isDone: false },
   { id: 2, title: 'Task 2', isDone: false },
   { id: 3, title: 'Task 3', isDone: false },
@@ -9,8 +15,8 @@ const appTasks = [
   { id: 5, title: 'Task 5', isDone: false }
 ];
 
-export const ToDoList = () => {
-  const [tasks, setTasks] = useState(appTasks);
+export const UnfinishedToDoCountPageTitle = () => {
+  const [tasks, setTasks] = useState<Task[]>(appTasks);
   const { changeTitle } = useTitle();
 
   useEffect(() => {
@@ -19,7 +25,7 @@ export const ToDoList = () => {
   }, []);
 
   // Handle check/uncheck task
-  const checkTask = (id, isDone) => {
+  const checkTask = (id: number, isDone: boolean) => {
     const updatedTasks = tasks.map((task) =>
       task.id === id ? { ...task, isDone } : task
     );
