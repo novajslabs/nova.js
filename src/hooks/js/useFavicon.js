@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export const useFavicon = () => {
-  const [faviconUrl, setFaviconUrl] = useState('');
+  const [faviconUrl, setFaviconUrl] = useState(
+    document.querySelector(`link[rel~="icon"]`)?.href
+  );
 
-  useEffect(() => {
+  const changeFavicon = (newFavicon) => {
     let link = document.querySelector(`link[rel~="icon"]`);
 
     if (!link) {
       link = document.createElement('link');
-      link.type = 'image/x-icon';
       link.rel = 'icon';
       document.head.appendChild(link);
     }
 
-    link.href = faviconUrl;
-  }, [faviconUrl]);
+    link.href = newFavicon;
+    setFaviconUrl(newFavicon);
+  };
 
-  const changeFavicon = (newFavicon) => setFaviconUrl(newFavicon);
-
-  return changeFavicon;
+  return { faviconUrl, changeFavicon };
 };
