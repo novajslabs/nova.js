@@ -11,7 +11,7 @@ interface DeviceOrientation {
   type: OrientationType;
 }
 
-function useDeviceOrientation(): DeviceOrientation {
+export const useDeviceOrientation = (): DeviceOrientation => {
   const [orientation, setOrientation] = useState<DeviceOrientation>({
     angle: 0,
     type: 'landscape-primary'
@@ -36,6 +36,4 @@ function useDeviceOrientation(): DeviceOrientation {
   }, []);
 
   return orientation;
-}
-
-export default useDeviceOrientation;
+};

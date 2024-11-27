@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function useDeviceOrientation() {
+export const useDeviceOrientation = () => {
   const [orientation, setOrientation] = useState({
     angle: 0,
     type: 'landscape-primary'
@@ -24,6 +24,4 @@ function useDeviceOrientation() {
   }, []);
 
   return orientation;
-}
-
-export default useDeviceOrientation;
+};
