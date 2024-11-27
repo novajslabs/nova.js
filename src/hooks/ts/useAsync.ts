@@ -7,7 +7,7 @@ interface UseAsyncState<T> {
   isSuccess: boolean;
 }
 
-export function useAsync<T>() {
+export const useAsync = <T>() => {
   const [state, setState] = useState<UseAsyncState<T>>({
     data: null,
     isLoading: false,
@@ -39,4 +39,4 @@ export function useAsync<T>() {
   }, []);
 
   return { execute, ...state };
-}
+};
