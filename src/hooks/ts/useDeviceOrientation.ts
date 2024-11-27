@@ -25,7 +25,6 @@ export const useDeviceOrientation = (): DeviceOrientation => {
       setOrientation({ angle, type });
     };
 
-    // Set initial orientation
     handleOrientationChange();
 
     window.addEventListener('orientationchange', handleOrientationChange);
