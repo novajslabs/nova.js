@@ -23,7 +23,7 @@ Star this repo.
 - [LinkedIn](http://www.linkedin.com/shareArticle?mini=true&url=https://novajs.co)
 - [WhatsApp](https://api.whatsapp.com/send?text=https://novajs.co)
 - [Facebook](https://www.facebook.com/sharer/sharer.php?u=https://novajs.co)
-  - [X](https://twitter.com/intent/tweet?url=https://novajs.co)
+- [X (Twitter)](https://twitter.com/intent/tweet?url=https://novajs.co)
 - [Reddit](https://www.reddit.com/submit?url=https://novajs.co)
 
 ## Contributions
