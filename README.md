@@ -1,6 +1,6 @@
 # Nova.js
 
-AsyncCalculation collection of dependency-free React hooks.
+A collection of dependency-free React hooks.
 
 ## Getting started
 
