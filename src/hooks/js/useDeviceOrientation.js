@@ -1,27 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from 'react';
 
-export const useDeviceOrientation = () => {
-  const [orientation, setOrientation] = useState({
-    angle: 0,
-    type: 'landscape-primary'
-  });
-
-  useEffect(() => {
-    const handleOrientationChange = () => {
-      const angle = window.screen.orientation.angle;
-      const type = window.screen.orientation.type;
-
-      setOrientation({ angle, type });
-    };
-
-    handleOrientationChange();
-
-    window.addEventListener('orientationchange', handleOrientationChange);
-
-    return () => {
-      window.removeEventListener('orientationchange', handleOrientationChange);
-    };
-  }, []);
-
-  return orientation;
+const orientationSubscribe = (cb) => {
+  window.addEventListener('orientationchange', cb);
+  return () => window.removeEventListener('orientationchange', cb);
 };
+
+const getOrientation = () => window.screen.orientation;
+
+export const useDeviceOrientation = () =>
+  useSyncExternalStore(orientationSubscribe, getOrientation);
