@@ -1,15 +1,5 @@
-import { useMousePosition } from './hooks/js/useMousePosition';
-
 const App = () => {
-  const mousePosition = useMousePosition();
-  console.log(mousePosition);
-  return (
-    <div>
-      <p>
-        Mouse is at ({mousePosition.x}, {mousePosition.y})
-      </p>
-    </div>
-  );
+  return <p>Test your hook here</p>;
 };
 
 export default App;

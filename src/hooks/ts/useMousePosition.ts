@@ -1,30 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from 'react';
 
 interface MousePosition {
   x: number;
   y: number;
 }
 
-export const useMousePosition = (): MousePosition => {
-  const [mousePosition, setMousePosition] = useState<MousePosition>({
-    x: 0,
-    y: 0
-  });
+let mousePosition: MousePosition = { x: 0, y: 0 };
 
-  useEffect(() => {
+export const useMousePosition = (): MousePosition => {
+  const subscribe = (callback: () => void) => {
     const handleMouseMove = (event: MouseEvent) => {
-      setMousePosition({
+      mousePosition = {
         x: event.clientX,
         y: event.clientY
-      });
+      };
+      callback();
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, []);
+  };
 
-  return mousePosition;
+  const getSnapshot = (): MousePosition => mousePosition;
+
+  const getServerSnapshot = (): MousePosition => ({ x: 0, y: 0 });
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 };
