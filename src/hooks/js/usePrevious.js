@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 export default function usePrevious(value) {
   const currentRef = useRef(value);
-  const previousRef = useRef();
+  const previousRef = useRef(undefined);
 
   if (currentRef.current !== value) {
     previousRef.current = currentRef.current;
