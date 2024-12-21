@@ -5,7 +5,12 @@ const orientationSubscribe = (cb: () => void) => {
   return () => window.removeEventListener('orientationchange', cb);
 };
 
-const getOrientation = () => window.screen.orientation;
+const getOrientation = () => {
+  return {
+    type: window.screen.orientation.type,
+    angle: window.screen.orientation.angle
+  };
+};
 
 export const useDeviceOrientation = () =>
   useSyncExternalStore(orientationSubscribe, getOrientation);
