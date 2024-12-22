@@ -6,11 +6,9 @@ const orientationSubscribe = (cb) => {
 };
 
 const getOrientation = () => {
-  return {
-    type: window.screen.orientation.type,
-    angle: window.screen.orientation.angle
-  };
+  const { type, angle } = window.screen.orientation;
+  return JSON.stringify({ type, angle });
 };
 
 export const useDeviceOrientation = () =>
-  useSyncExternalStore(orientationSubscribe, getOrientation);
+  JSON.parse(useSyncExternalStore(orientationSubscribe, getOrientation));
