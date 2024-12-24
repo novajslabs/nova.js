@@ -1,5 +1,5 @@
 import { useMousePosition } from '../../hooks/ts/useMousePosition';
-import './index.css';
+import './styles.css';
 
 export const CursorPositionRealTime = () => {
   const { x, y } = useMousePosition();
