@@ -19,20 +19,18 @@ export const CopyApiKeys = () => {
   };
 
   return (
-    <div>
-      <ul>
-        {APIKeys.map((key) => (
-          <li key={key.id}>
-            <div>
-              <p>{key.name}</p>
-              <p>{key.value}</p>
-            </div>
-            <button onClick={() => handleCopy(key.value, key.name)}>
-              {copiedText === key.value ? 'Copied!' : 'Copy'}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul>
+      {APIKeys.map((key) => (
+        <li key={key.id}>
+          <div>
+            <p>{key.name}</p>
+            <p>{key.value}</p>
+          </div>
+          <button onClick={() => handleCopy(key.value, key.name)}>
+            {copiedText === key.value ? 'Copied!' : 'Copy'}
+          </button>
+        </li>
+      ))}
+    </ul>
   );
 };
