@@ -3,28 +3,18 @@ import { useState } from 'react';
 export const useClipboard = () => {
   const [copiedText, setCopiedText] = useState('');
 
-  const copyToClipboard = (value) => {
-    return new Promise((resolve, reject) => {
-      try {
-        if (navigator?.clipboard?.writeText) {
-          navigator.clipboard
-            .writeText(value)
-            .then(() => {
-              setCopiedText(value);
-              resolve(value);
-            })
-            .catch((e) => {
-              setCopiedText(null);
-              reject(e);
-            });
-        } else {
-          setCopiedText(null);
-          throw new Error('Clipboard not supported');
-        }
-      } catch (e) {
-        reject(e);
+  const copyToClipboard = async (value) => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(value);
+        setCopiedText(value);
+      } else {
+        throw new Error('Clipboard not supported');
       }
-    });
+    } catch (e) {
+      setCopiedText(null);
+      throw new Error(e instanceof Error ? e.message : 'Unknown error');
+    }
   };
 
   return { copiedText, copyToClipboard };
