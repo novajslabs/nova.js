@@ -1,16 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export const useFirstVisit = () => {
   const [isFirstVisit, setIsFirstVisit] = useState(false);
 
-  useEffect(() => {
-    const firstVisit = localStorage.getItem('firstVisit');
+  const firstVisit = localStorage.getItem('firstVisit');
 
-    if (firstVisit === null) {
-      localStorage.setItem('firstVisit', 'false');
-      setIsFirstVisit(true);
-    }
-  }, []);
+  if (firstVisit === null) {
+    localStorage.setItem('firstVisit', 'true');
+    setIsFirstVisit(true);
+  }
 
   return isFirstVisit;
 };
