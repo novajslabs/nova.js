@@ -1,22 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
-type TUseOffline = () => boolean;
+export const useOffline = () => {
+  const getSnapshot = () => !navigator.onLine;
 
-export const useOffline: TUseOffline = () => {
-  const [offline, setOffline] = useState<boolean | null>(null);
+  const subscribe = (callback: () => void) => {
+    const handleNetworkChange = () => callback();
 
-  useEffect(() => {
-    const handleNetworkState = () => {
-      setOffline(!offline);
-    };
-    addEventListener('offline', handleNetworkState);
-    addEventListener('online', handleNetworkState);
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
 
     return () => {
-      removeEventListener('online', handleNetworkState);
-      removeEventListener('offline', handleNetworkState);
+      window.removeEventListener('online', handleNetworkChange);
+      window.removeEventListener('offline', handleNetworkChange);
     };
-  }, [offline]);
+  };
 
-  return !!offline;
+  return useSyncExternalStore(subscribe, getSnapshot);
 };
