@@ -4,7 +4,7 @@ A collection of dependency-free React hooks.
 
 ## Getting started
 
-Please follow the documentation at [novajs.co](https://novajs.co/).
+Please follow the documentation at [novajs.dev](https://novajs.dev/).
 
 ## Questions
 
@@ -20,11 +20,11 @@ Star this repo.
 
 ### Share
 
-- [LinkedIn](http://www.linkedin.com/shareArticle?mini=true&url=https://novajs.co)
-- [WhatsApp](https://api.whatsapp.com/send?text=https://novajs.co)
-- [Facebook](https://www.facebook.com/sharer/sharer.php?u=https://novajs.co)
-- [X (Twitter)](https://twitter.com/intent/tweet?url=https://novajs.co)
-- [Reddit](https://www.reddit.com/submit?url=https://novajs.co)
+- [LinkedIn](http://www.linkedin.com/shareArticle?mini=true&url=https://novajs.dev)
+- [WhatsApp](https://api.whatsapp.com/send?text=https://novajs.dev)
+- [Facebook](https://www.facebook.com/sharer/sharer.php?u=https://novajs.dev)
+- [X (Twitter)](https://twitter.com/intent/tweet?url=https://novajs.dev)
+- [Reddit](https://www.reddit.com/submit?url=https://novajs.dev)
 
 ## Contributions
 
