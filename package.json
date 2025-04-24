@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prettier": "prettier --check .",
     "test": "vitest",
     "test:watch": "vitest --watch"
   },
