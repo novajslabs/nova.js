@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "nova.js",
   "private": true,
   "scripts": {
     "build": "turbo run build",
