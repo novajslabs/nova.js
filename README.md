@@ -1,5 +1,6 @@
 # Nova.js
 
+[![Run Tests](https://github.com/novajslabs/nova.js/actions/workflows/test.yml/badge.svg)](https://github.com/novajslabs/nova.js/actions/workflows/test.yml)
 ![Node.js](https://img.shields.io/badge/node.js-18|20|22-blue)
 ![GitHub repo size](https://img.shields.io/github/repo-size/novajslabs/nova.js)
 ![GitHub contributors](https://img.shields.io/github/contributors/novajslabs/nova.js)
