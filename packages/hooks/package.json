@@ -1,28 +1,45 @@
 {
-  "name": "hooks",
-  "version": "1.26.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+  "name": "@novajslabs/hooks",
+  "version": "0.0.0",
+  "description": "A collection of dependency-free React hooks.",
+  "homepage": "https://novajs.dev/",
+  "bugs": "https://github.com/novajslabs/nova.js/issues",
+  "license": "MIT",
+  "author": {
+    "name": "Daniel Castillo",
+    "email": "daniel@dlcastillop.com",
+    "url": "https://dlcastillop.com"
   },
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/novajslabs/nova.js.git",
+    "directory": "packages/hooks"
+  },
+  "funding": "https://ko-fi.com/dlcastillop/tiers",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build",
+    "fmt": "oxfmt",
+    "lint": "oxlint"
   },
   "devDependencies": {
-    "@eslint/js": "^9.22.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.22.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^16.0.0",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.26.1",
-    "vite": "^6.3.1"
+    "@types/node": "^25.0.3",
+    "oxfmt": "^0.35.0",
+    "oxlint": "^1.50.0",
+    "tsdown": "^0.20.3",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
   }
 }
