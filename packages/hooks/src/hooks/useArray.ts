@@ -36,4 +36,4 @@ export const useArray = <T>(initialArray: T[]) => {
     remove,
     clear,
   };
-}
+};
