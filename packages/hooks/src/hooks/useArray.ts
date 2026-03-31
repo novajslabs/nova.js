@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function useArray<T>(initialArray: T[]) {
+export const useArray = <T>(initialArray: T[]) => {
   const [array, setArray] = useState<T[]>(initialArray);
 
   const push = (element: T) => {
