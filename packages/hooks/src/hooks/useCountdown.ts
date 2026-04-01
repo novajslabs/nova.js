@@ -16,22 +16,21 @@ export const useCountdown = (min: number, max: number): Counter => {
   const [isOver, setIsOver] = useState(false);
 
   useEffect(() => {
-    if (paused) {
-      return;
-    }
+    if (paused || isOver) return;
 
     const interval = setInterval(() => {
-      setCount((prev) => prev - 1);
+      setCount((prev) => {
+        if (prev - 1 <= min) {
+          setIsOver(true);
+          clearInterval(interval);
+          return min;
+        }
+        return prev - 1;
+      });
     }, 1000);
 
-    if (count <= min) {
-      setIsOver(true);
-      clearInterval(interval);
-      return;
-    }
-
     return () => clearInterval(interval);
-  }, [count, min, max, paused]);
+  }, [paused, isOver, min]);
 
   return {
     current: count.toString(),
