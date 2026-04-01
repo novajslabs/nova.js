@@ -15,23 +15,25 @@ export const useCountup = (min: number, max: number): Counter => {
   const [paused, setPaused] = useState(false);
   const [isOver, setIsOver] = useState(false);
 
-  useEffect(() => {
-    if (paused) {
-      return;
-    }
+  useEffect(
+    function syncCountup() {
+      if (paused || isOver) return;
 
-    const interval = setInterval(() => {
-      setCount((prev) => prev + 1);
-    }, 1000);
+      const interval = setInterval(() => {
+        setCount((prev) => {
+          if (prev + 1 >= max) {
+            setIsOver(true);
+            clearInterval(interval);
+            return max;
+          }
+          return prev + 1;
+        });
+      }, 1000);
 
-    if (count >= max) {
-      setIsOver(true);
-      clearInterval(interval);
-      return;
-    }
-
-    return () => clearInterval(interval);
-  }, [count, min, max, paused]);
+      return () => clearInterval(interval);
+    },
+    [paused, isOver, max],
+  );
 
   return {
     current: count.toString(),
