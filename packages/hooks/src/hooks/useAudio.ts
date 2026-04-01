@@ -158,14 +158,16 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>): object => {
     });
   };
 
-  useEffect(() => {
+  useEffect(function pauseOnUnmount() {
     return () => {
       pause();
     };
   }, []);
 
-  useEffect(() => {
-    if (audio) {
+  useEffect(
+    function syncAudioEvents() {
+      if (!audio) return;
+
       audio.addEventListener("volumechange", handleVolumeControl);
       audio.addEventListener("play", handlePlayPauseControl);
       audio.addEventListener("pause", handlePlayPauseControl);
@@ -177,8 +179,9 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>): object => {
         audio.removeEventListener("pause", handlePlayPauseControl);
         audio.removeEventListener("timeupdate", handleTimeControl);
       };
-    }
-  }, [audio]);
+    },
+    [audio],
+  );
 
   return {
     ...audioState,

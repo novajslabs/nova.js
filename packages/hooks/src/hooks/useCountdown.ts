@@ -45,22 +45,25 @@ export const useCountdown = (min: number, max: number): Counter => {
   const [paused, setPaused] = useState(false);
   const [isOver, setIsOver] = useState(false);
 
-  useEffect(() => {
-    if (paused || isOver) return;
+  useEffect(
+    function syncCountdown() {
+      if (paused || isOver) return;
 
-    const interval = setInterval(() => {
-      setCount((prev) => {
-        if (prev - 1 <= min) {
-          setIsOver(true);
-          clearInterval(interval);
-          return min;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+      const interval = setInterval(() => {
+        setCount((prev) => {
+          if (prev - 1 <= min) {
+            setIsOver(true);
+            clearInterval(interval);
+            return min;
+          }
+          return prev - 1;
+        });
+      }, 1000);
 
-    return () => clearInterval(interval);
-  }, [paused, isOver, min]);
+      return () => clearInterval(interval);
+    },
+    [paused, isOver, min],
+  );
 
   return {
     current: count.toString(),
