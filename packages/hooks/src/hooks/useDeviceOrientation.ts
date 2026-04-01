@@ -5,10 +5,13 @@ const orientationSubscribe = (cb: () => void) => {
   return () => window.removeEventListener("orientationchange", cb);
 };
 
-const getOrientation = () => {
-  const { type, angle } = window.screen.orientation;
-  return JSON.stringify({ type, angle });
-};
+const getOrientation = () => window.screen.orientation.type;
+const getAngle = () => window.screen.orientation.angle;
 
-export const useDeviceOrientation = () =>
-  JSON.parse(useSyncExternalStore(orientationSubscribe, getOrientation));
+const serverSnapshotOrientation = (): OrientationType => "portrait-primary";
+const serverSnapshotAngle = () => 0;
+
+export const useDeviceOrientation = () => ({
+  type: useSyncExternalStore(orientationSubscribe, getOrientation, serverSnapshotOrientation),
+  angle: useSyncExternalStore(orientationSubscribe, getAngle, serverSnapshotAngle),
+});
