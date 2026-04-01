@@ -1,16 +1,12 @@
 import { useState } from "react";
 
-export const useClipboard = () => {
+export const useClipboard = (): object => {
   const [copiedText, setCopiedText] = useState<string | null>("");
 
   const copyToClipboard = async (value: string) => {
     try {
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(value);
-        setCopiedText(value);
-      } else {
-        throw new Error("Clipboard not supported");
-      }
+      await navigator.clipboard.writeText(value);
+      setCopiedText(value);
     } catch (e) {
       setCopiedText(null);
       throw new Error(e instanceof Error ? e.message : "Unknown error");
