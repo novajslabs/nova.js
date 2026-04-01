@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 
 interface BatteryManager {
   level: number;
@@ -30,59 +30,103 @@ interface NavigatorWithBattery extends Navigator {
   getBattery: () => Promise<BatteryManager>;
 }
 
-export const useBattery = () => {
-  const [batteryState, setBatteryState] = useState<BatteryState>({
+let battery: BatteryManager | null = null;
+let cachedSnapshot: BatteryState = {
+  supported: true,
+  loading: true,
+  level: null,
+  charging: null,
+  chargingTime: null,
+  dischargingTime: null,
+};
+
+const getBattery = async () => {
+  if (!battery) {
+    battery = await (navigator as NavigatorWithBattery).getBattery();
+  }
+  return battery;
+};
+
+const getSnapshot = (): BatteryState => {
+  if (!(navigator as NavigatorWithBattery).getBattery) {
+    if (!cachedSnapshot.supported && !cachedSnapshot.loading) return cachedSnapshot;
+
+    cachedSnapshot = {
+      supported: false,
+      loading: false,
+      level: null,
+      charging: null,
+      chargingTime: null,
+      dischargingTime: null,
+    };
+    return cachedSnapshot;
+  }
+
+  if (!battery) {
+    if (cachedSnapshot.loading) return cachedSnapshot;
+
+    cachedSnapshot = {
+      supported: true,
+      loading: true,
+      level: null,
+      charging: null,
+      chargingTime: null,
+      dischargingTime: null,
+    };
+    return cachedSnapshot;
+  }
+
+  if (
+    cachedSnapshot.level === battery.level &&
+    cachedSnapshot.charging === battery.charging &&
+    cachedSnapshot.chargingTime === battery.chargingTime &&
+    cachedSnapshot.dischargingTime === battery.dischargingTime &&
+    !cachedSnapshot.loading
+  ) {
+    return cachedSnapshot;
+  }
+
+  cachedSnapshot = {
     supported: true,
-    loading: true,
-    level: null,
-    charging: null,
-    chargingTime: null,
-    dischargingTime: null,
+    loading: false,
+    level: battery.level,
+    charging: battery.charging,
+    chargingTime: battery.chargingTime,
+    dischargingTime: battery.dischargingTime,
+  };
+  return cachedSnapshot;
+};
+
+const serverSnapshot: BatteryState = {
+  supported: false,
+  loading: false,
+  level: null,
+  charging: null,
+  chargingTime: null,
+  dischargingTime: null,
+};
+
+const getServerSnapshot = () => serverSnapshot;
+
+const subscribe = (onStoreChange: () => void) => {
+  getBattery().then((bat) => {
+    bat.addEventListener("levelchange", onStoreChange);
+    bat.addEventListener("chargingchange", onStoreChange);
+    bat.addEventListener("chargingtimechange", onStoreChange);
+    bat.addEventListener("dischargingtimechange", onStoreChange);
+    onStoreChange();
   });
 
-  useEffect(() => {
-    const _navigator = navigator as NavigatorWithBattery;
-    let battery: BatteryManager;
-
-    const handleBatteryChange = () => {
-      setBatteryState({
-        supported: true,
-        loading: false,
-        level: battery.level,
-        charging: battery.charging,
-        chargingTime: battery.chargingTime,
-        dischargingTime: battery.dischargingTime,
-      });
-    };
-
-    if (!_navigator.getBattery) {
-      setBatteryState((batteryState) => ({
-        ...batteryState,
-        supported: false,
-        loading: false,
-      }));
-      return;
+  return () => {
+    if (battery) {
+      battery.removeEventListener("levelchange", onStoreChange);
+      battery.removeEventListener("chargingchange", onStoreChange);
+      battery.removeEventListener("chargingtimechange", onStoreChange);
+      battery.removeEventListener("dischargingtimechange", onStoreChange);
     }
+  };
+};
 
-    _navigator.getBattery().then((_battery) => {
-      battery = _battery;
-      handleBatteryChange();
-
-      _battery.addEventListener("levelchange", handleBatteryChange);
-      _battery.addEventListener("chargingchange", handleBatteryChange);
-      _battery.addEventListener("chargingtimechange", handleBatteryChange);
-      _battery.addEventListener("dischargingtimechange", handleBatteryChange);
-    });
-
-    return () => {
-      if (battery) {
-        battery.removeEventListener("levelchange", handleBatteryChange);
-        battery.removeEventListener("chargingchange", handleBatteryChange);
-        battery.removeEventListener("chargingtimechange", handleBatteryChange);
-        battery.removeEventListener("dischargingtimechange", handleBatteryChange);
-      }
-    };
-  }, []);
-
-  return batteryState;
+export const useBattery = () => {
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 };
