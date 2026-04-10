@@ -24,7 +24,7 @@ import { useState } from "react";
  * remove(0);       // ["world"]
  * clear();         // []
  */
-export const useArray = <T>(initialArray: T[]): object => {
+export const useArray = <T>(initialArray: T[]) => {
   const [array, setArray] = useState<T[]>(initialArray);
 
   const push = (element: T) => {

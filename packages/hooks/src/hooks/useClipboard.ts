@@ -16,7 +16,7 @@ import { useState } from "react";
  *   </button>
  * );
  */
-export const useClipboard = (): object => {
+export const useClipboard = () => {
   const [copiedText, setCopiedText] = useState<string | null>("");
 
   const copyToClipboard = async (value: string) => {

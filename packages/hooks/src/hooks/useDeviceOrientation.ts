@@ -27,7 +27,7 @@ const serverSnapshotAngle = () => 0;
  *   </p>
  * );
  */
-export const useDeviceOrientation = (): object => ({
+export const useDeviceOrientation = () => ({
   type: useSyncExternalStore(orientationSubscribe, getOrientation, serverSnapshotOrientation),
   angle: useSyncExternalStore(orientationSubscribe, getAngle, serverSnapshotAngle),
 });

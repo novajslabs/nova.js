@@ -41,7 +41,7 @@ import { useEffect, useState, type RefObject } from "react";
  *   </>
  * );
  */
-export const useAudio = (ref: RefObject<HTMLAudioElement>): object => {
+export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
   const [audioState, setAudioState] = useState(() => {
     const audio = ref.current;
 
