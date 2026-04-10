@@ -42,16 +42,20 @@ import { useEffect, useState, type RefObject } from "react";
  * );
  */
 export const useAudio = (ref: RefObject<HTMLAudioElement>): object => {
-  const audio = ref.current;
+  const [audioState, setAudioState] = useState(() => {
+    const audio = ref.current;
 
-  const [audioState, setAudioState] = useState({
-    isPaused: audio ? audio?.paused : true,
-    isMuted: audio ? audio?.muted : false,
-    currentVolume: audio ? audio?.volume : 100,
-    currentTime: audio ? audio?.currentTime : 0,
+    return {
+      isPaused: audio ? audio.paused : true,
+      isMuted: audio ? audio.muted : false,
+      currentVolume: audio ? audio.volume * 100 : 100,
+      currentTime: audio ? audio.currentTime : 0,
+    };
   });
 
   const play = () => {
+    const audio = ref.current;
+
     audio?.play();
     setAudioState((prev) => {
       return {
@@ -63,6 +67,8 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>): object => {
   };
 
   const pause = () => {
+    const audio = ref.current;
+
     audio?.pause();
     setAudioState((prev) => {
       return {
@@ -72,18 +78,10 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>): object => {
     });
   };
 
-  const handlePlayPauseControl = (e: Event) => {
-    setAudioState((prev) => {
-      return {
-        ...prev,
-        isPaused: (e.target as HTMLAudioElement).paused,
-      };
-    });
-  };
-
-  const togglePause = () => (audio?.paused ? play() : pause());
+  const togglePause = () => (ref.current?.paused ? play() : pause());
 
   const handleVolume = (delta: number) => {
+    const audio = ref.current;
     const deltaDecimal = delta / 100;
 
     if (audio) {
@@ -105,19 +103,9 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>): object => {
     }
   };
 
-  const handleVolumeControl = (e: Event) => {
-    if (e.target && audio) {
-      const newVolume = (e.target as HTMLAudioElement).volume * 100;
-
-      handleMute(audio.muted);
-      setAudioState((prev) => ({
-        ...prev,
-        currentVolume: newVolume,
-      }));
-    }
-  };
-
   const handleMute = (mute: boolean) => {
+    const audio = ref.current;
+
     if (audio) {
       audio.muted = mute;
       setAudioState((prev) => {
@@ -130,6 +118,8 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>): object => {
   };
 
   const handleTime = (delta: number = 5) => {
+    const audio = ref.current;
+
     if (audio) {
       let newTime = audio.currentTime + delta;
 
@@ -149,38 +139,66 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>): object => {
     }
   };
 
-  const handleTimeControl = (e: Event) => {
-    setAudioState((prev) => {
-      return {
-        ...prev,
-        currentTime: (e.target as HTMLAudioElement).currentTime,
-      };
-    });
-  };
-
-  useEffect(function pauseOnUnmount() {
-    return () => {
-      pause();
-    };
-  }, []);
-
   useEffect(
-    function syncAudioEvents() {
+    function syncAudioElement() {
+      const audio = ref.current;
+
       if (!audio) return;
 
-      audio.addEventListener("volumechange", handleVolumeControl);
-      audio.addEventListener("play", handlePlayPauseControl);
-      audio.addEventListener("pause", handlePlayPauseControl);
-      audio.addEventListener("timeupdate", handleTimeControl);
+      const handleAudioVolumeControl = (e: Event) => {
+        const target = e.target;
+
+        if (!(target instanceof HTMLAudioElement)) {
+          return;
+        }
+
+        setAudioState((prev) => ({
+          ...prev,
+          isMuted: target.muted,
+          currentVolume: target.volume * 100,
+        }));
+      };
+
+      const handleAudioPlayPauseControl = (e: Event) => {
+        const target = e.target;
+
+        if (!(target instanceof HTMLAudioElement)) {
+          return;
+        }
+
+        setAudioState((prev) => ({
+          ...prev,
+          isPaused: target.paused,
+        }));
+      };
+
+      const handleAudioTimeControl = (e: Event) => {
+        const target = e.target;
+
+        if (!(target instanceof HTMLAudioElement)) {
+          return;
+        }
+
+        setAudioState((prev) => ({
+          ...prev,
+          currentTime: target.currentTime,
+        }));
+      };
+
+      audio.addEventListener("volumechange", handleAudioVolumeControl);
+      audio.addEventListener("play", handleAudioPlayPauseControl);
+      audio.addEventListener("pause", handleAudioPlayPauseControl);
+      audio.addEventListener("timeupdate", handleAudioTimeControl);
 
       return () => {
-        audio.removeEventListener("volumechange", handleVolumeControl);
-        audio.removeEventListener("play", handlePlayPauseControl);
-        audio.removeEventListener("pause", handlePlayPauseControl);
-        audio.removeEventListener("timeupdate", handleTimeControl);
+        audio.removeEventListener("volumechange", handleAudioVolumeControl);
+        audio.removeEventListener("play", handleAudioPlayPauseControl);
+        audio.removeEventListener("pause", handleAudioPlayPauseControl);
+        audio.removeEventListener("timeupdate", handleAudioTimeControl);
+        audio.pause();
       };
     },
-    [audio],
+    [ref],
   );
 
   return {
@@ -192,7 +210,7 @@ export const useAudio = (ref: RefObject<HTMLAudioElement>): object => {
     decreaseVolume: (decrease: number = 5) => handleVolume(decrease * -1),
     mute: () => handleMute(true),
     unmute: () => handleMute(false),
-    toggleMute: () => handleMute(!audio?.muted),
+    toggleMute: () => handleMute(!ref.current?.muted),
     forward: (increase: number = 5) => handleTime(increase),
     back: (decrease: number = 5) => handleTime(decrease * -1),
   };
