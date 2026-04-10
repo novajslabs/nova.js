@@ -17,6 +17,6 @@ const subscribeToTouchDevice = (onStoreChange: () => void) => {
   };
 };
 
-export function useIsTouchDevice() {
+export const useIsTouchDevice = () => {
   return useSyncExternalStore(subscribeToTouchDevice, getTouchDeviceSnapshot, () => false);
-}
+};

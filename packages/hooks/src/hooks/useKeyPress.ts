@@ -11,41 +11,41 @@ export const useKeyPress = (config: KeyConfig) => {
   const [keyPressed, setKeyPressed] = useState(false);
   const { key: targetKey, ctrl, alt, shift } = config;
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const matchesKeyEvent = (e: KeyboardEvent) => {
     const { key, ctrlKey, altKey, shiftKey } = e;
 
-    if (
+    return (
       (!ctrl && !alt && !shift && key === targetKey) ||
       (ctrl && key === targetKey && ctrlKey === ctrl) ||
       (alt && key === targetKey && altKey === alt) ||
       (shift && key === targetKey && shiftKey === shift)
-    ) {
-      setKeyPressed(true);
-    }
+    );
   };
 
-  const handleKeyUp = (e: KeyboardEvent) => {
-    const { key, ctrlKey, altKey, shiftKey } = e;
+  useEffect(
+    function syncKeyPressListener() {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (matchesKeyEvent(e)) {
+          setKeyPressed(true);
+        }
+      };
 
-    if (
-      (!ctrl && !alt && !shift && key === targetKey) ||
-      (ctrl && key === targetKey && ctrlKey === ctrl) ||
-      (alt && key === targetKey && altKey === alt) ||
-      (shift && key === targetKey && shiftKey === shift)
-    ) {
-      setKeyPressed(false);
-    }
-  };
+      const handleKeyUp = (e: KeyboardEvent) => {
+        if (matchesKeyEvent(e)) {
+          setKeyPressed(false);
+        }
+      };
 
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
+      window.addEventListener("keydown", handleKeyDown);
+      window.addEventListener("keyup", handleKeyUp);
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, []);
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+        window.removeEventListener("keyup", handleKeyUp);
+      };
+    },
+    [alt, ctrl, shift, targetKey],
+  );
 
   return keyPressed;
 };
