@@ -3,14 +3,16 @@ import { useEffect, useRef } from "react";
 export const useEventListener = (
   eventName: string,
   callback: EventListener,
-  element: HTMLElement | (Window & typeof globalThis) | Document | null = window,
+  element: HTMLElement | (Window & typeof globalThis) | Document | null = null,
 ) => {
   const callbackRef = useRef<EventListener>(callback);
   callbackRef.current = callback;
 
   useEffect(
     function subscribeToEvent() {
-      if (!(element && element.addEventListener)) {
+      const target = element ?? (typeof window !== "undefined" ? window : null);
+
+      if (!(target && target.addEventListener)) {
         return;
       }
 
@@ -18,10 +20,10 @@ export const useEventListener = (
         callbackRef.current(event);
       };
 
-      element.addEventListener(eventName, handleEvent);
+      target.addEventListener(eventName, handleEvent);
 
       return () => {
-        element.removeEventListener(eventName, handleEvent);
+        target.removeEventListener(eventName, handleEvent);
       };
     },
     [eventName, element],
