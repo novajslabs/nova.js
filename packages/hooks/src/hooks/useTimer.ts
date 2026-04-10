@@ -28,6 +28,25 @@ interface Timer {
   togglePause: () => void;
 }
 
+/**
+ * React hook to run a countdown timer from a `dd:hh:mm:ss` starting value.
+ *
+ * @param {string} startTime - Initial timer value in `dd:hh:mm:ss` format.
+ * @returns {Timer} An object with timer state and control methods.
+ * @returns {string} returns.current - Formatted remaining time as `dd:hh:mm:ss`.
+ * @returns {boolean} returns.isPaused - `true` when the timer is paused.
+ * @returns {boolean} returns.isOver - `true` when the timer reaches zero.
+ * @returns {number} returns.currentDays - Current remaining day count.
+ * @returns {number} returns.currentHours - Current remaining hour count.
+ * @returns {number} returns.currentMinutes - Current remaining minute count.
+ * @returns {number} returns.currentSeconds - Current remaining second count.
+ * @returns {number} returns.elapsedSeconds - Seconds elapsed since the timer started.
+ * @returns {number} returns.remainingSeconds - Seconds remaining until the timer reaches zero.
+ * @returns {() => void} returns.pause - Pauses the timer.
+ * @returns {() => void} returns.play - Resumes the timer.
+ * @returns {() => void} returns.reset - Resets the timer back to the original `startTime`.
+ * @returns {() => void} returns.togglePause - Toggles between paused and running states.
+ */
 export const useTimer = (startTime: string): Timer => {
   const { days, hours, minutes, seconds } = parseTime(startTime);
   const [time, setTime] = useState({ days, hours, minutes, seconds });
