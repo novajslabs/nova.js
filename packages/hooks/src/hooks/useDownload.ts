@@ -28,7 +28,7 @@ export const useDownload = () => {
 
   const getStream = async (
     contentLength: string,
-    reader: ReadableStreamDefaultReader<Uint8Array>,
+    reader: ReadableStreamDefaultReader<Uint8Array>
   ): Promise<ReadableStream<Uint8Array>> => {
     let loaded = 0;
     const total = parseInt(contentLength, 10);
