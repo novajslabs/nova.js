@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 
 const addLeadingZero = (digit: number): string => {
-  let timeStr = "";
-
-  digit % 10 === digit ? (timeStr += `0${digit}`) : (timeStr += `${digit}`);
-
-  return timeStr;
+  return digit % 10 === digit ? `0${digit}` : `${digit}`;
 };
 
 interface Stopwatch {
@@ -34,41 +30,46 @@ export const useStopwatch = (): Stopwatch => {
   const divider = ":";
   const [isOver, setIsOver] = useState(false);
 
-  useEffect(() => {
-    if (paused) {
-      return;
-    }
+  useEffect(
+    function syncStopwatch() {
+      if (paused) {
+        return;
+      }
 
-    const interval = setInterval(() => {
-      setTime((prev) => {
-        let d = prev.days;
-        let h = prev.hours;
-        let m = prev.minutes;
-        let s = prev.seconds;
+      const interval = setInterval(() => {
+        setTime((prev) => {
+          let d = prev.days;
+          let h = prev.hours;
+          let m = prev.minutes;
+          let s = prev.seconds;
 
-        if (s + 1 >= 60) {
-          s = 0;
-          if (m + 1 >= 60) {
-            m = 0;
-            if (h + 1 >= 24) {
-              h = 0;
-              d++;
+          if (s + 1 >= 60) {
+            s = 0;
+            if (m + 1 >= 60) {
+              m = 0;
+              if (h + 1 >= 24) {
+                h = 0;
+                d++;
+              } else {
+                h++;
+              }
             } else {
-              h++;
+              m++;
             }
           } else {
-            m++;
+            s++;
           }
-        } else {
-          s++;
-        }
 
-        return { days: d, hours: h, minutes: m, seconds: s };
-      });
-    }, 1000);
+          return { days: d, hours: h, minutes: m, seconds: s };
+        });
+      }, 1000);
 
-    return () => clearInterval(interval);
-  }, [time, paused]);
+      return () => {
+        clearInterval(interval);
+      };
+    },
+    [paused],
+  );
 
   return {
     current: `${addLeadingZero(time.days)}${divider}${addLeadingZero(
