@@ -11,34 +11,18 @@ interface Counter {
 }
 
 /**
- * React hook to create a countup functionality.
+ * React hook to count up from a minimum value to a maximum value at one-second intervals.
  *
- * @param {number} min - The starting value of the countup.
- * @param {number} max - The upper boundary at which the countup stops.
- *
- * @returns {Counter} An object with the current countup state and control methods.
- * @returns {string} returns.current - The current count as a string.
- * @returns {boolean} returns.isPaused - `true` if the countup is paused.
- * @returns {boolean} returns.isOver - `true` if the countup has reached `max`.
+ * @param {number} min - Initial count value.
+ * @param {number} max - Upper bound where the countup stops.
+ * @returns {Counter} An object with countup state and control methods.
+ * @returns {string} returns.current - Current count value as a string.
+ * @returns {boolean} returns.isPaused - `true` when the countup is paused.
+ * @returns {boolean} returns.isOver - `true` when the countup reaches `max`.
  * @returns {() => void} returns.pause - Pauses the countup.
  * @returns {() => void} returns.play - Resumes the countup.
- * @returns {() => void} returns.reset - Resets the count back to `min` and clears the `isOver` flag.
- * @returns {() => void} returns.togglePause - Pauses if running, resumes if paused.
- *
- * @example
- * const { current, isPaused, isOver, pause, play, reset } = useCountup(0, 60);
- *
- * if (isOver) return <p>Time's up!</p>;
- *
- * return (
- *   <div>
- *     <p>{current}s elapsed</p>
- *     <button onClick={isPaused ? play : pause}>
- *       {isPaused ? "Resume" : "Pause"}
- *     </button>
- *     <button onClick={reset}>Restart</button>
- *   </div>
- * );
+ * @returns {() => void} returns.reset - Resets the countup back to `min`.
+ * @returns {() => void} returns.togglePause - Toggles between paused and running states.
  */
 export const useCountup = (min: number, max: number): Counter => {
   const [count, setCount] = useState(min);

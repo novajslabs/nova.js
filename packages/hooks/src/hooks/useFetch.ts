@@ -11,6 +11,21 @@ type UseFetchReturn<TData, TError> = {
   refetch: () => Promise<void>;
 };
 
+/**
+ * React hook to fetch JSON data and track request state.
+ *
+ * @template TData - Expected shape of a successful JSON response.
+ * @template TError - Expected shape of an error JSON response.
+ * @param {string} url - Request URL.
+ * @param {RequestInit} [reqOpt] - Optional `fetch` configuration.
+ * @returns {UseFetchReturn<TData, TError>} An object with request state and a refetch method.
+ * @returns {TData | undefined} returns.data - Parsed successful response data, or `undefined`.
+ * @returns {UseFetchError<TError> | undefined} returns.error - Parsed error payload or thrown error, or `undefined`.
+ * @returns {boolean} returns.isLoading - `true` while the request is in progress.
+ * @returns {boolean} returns.isError - `true` whenever the request is not currently in a successful state.
+ * @returns {boolean} returns.isSuccess - `true` after the latest request resolves with an OK response.
+ * @returns {() => Promise<void>} returns.refetch - Runs the request again with the same URL and options.
+ */
 export const useFetch = <TData = unknown, TError = unknown>(
   url: string,
   reqOpt?: RequestInit,

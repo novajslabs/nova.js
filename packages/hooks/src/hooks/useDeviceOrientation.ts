@@ -12,20 +12,11 @@ const serverSnapshotOrientation = (): OrientationType => "portrait-primary";
 const serverSnapshotAngle = () => 0;
 
 /**
- * React hook to provide the current orientation of the screen.
+ * React hook to read the current screen orientation.
  *
- * @returns {Object} The current screen orientation.
- * @returns {OrientationType} returns.type - The orientation type: `"portrait-primary"`, `"portrait-secondary"`, `"landscape-primary"`, or `"landscape-secondary"`.
- * @returns {number} returns.angle - The orientation angle in degrees (`0`, `90`, `180`, or `270`).
- *
- * @example
- * const { type, angle } = useDeviceOrientation();
- *
- * return (
- *   <p>
- *     {type} — {angle}°
- *   </p>
- * );
+ * @returns {Object} An object with the current orientation data.
+ * @returns {OrientationType} returns.type - Current orientation type.
+ * @returns {number} returns.angle - Current orientation angle in degrees.
  */
 export const useDeviceOrientation = () => ({
   type: useSyncExternalStore(orientationSubscribe, getOrientation, serverSnapshotOrientation),

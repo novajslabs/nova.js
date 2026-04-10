@@ -19,6 +19,23 @@ interface Stopwatch {
   togglePause: () => void;
 }
 
+/**
+ * React hook to run a stopwatch that counts up in days, hours, minutes, and seconds.
+ *
+ * @returns {Stopwatch} An object with stopwatch state and control methods.
+ * @returns {string} returns.current - Formatted stopwatch value as `dd:hh:mm:ss`.
+ * @returns {boolean} returns.isPaused - `true` when the stopwatch is paused.
+ * @returns {boolean} returns.isOver - Completion flag exposed by the hook state.
+ * @returns {number} returns.currentDays - Current day counter.
+ * @returns {number} returns.currentHours - Current hour counter.
+ * @returns {number} returns.currentMinutes - Current minute counter.
+ * @returns {number} returns.currentSeconds - Current second counter.
+ * @returns {number} returns.elapsedSeconds - Total elapsed time in seconds.
+ * @returns {() => void} returns.pause - Pauses the stopwatch.
+ * @returns {() => void} returns.play - Resumes the stopwatch.
+ * @returns {() => void} returns.reset - Resets the stopwatch back to zero.
+ * @returns {() => void} returns.togglePause - Toggles between paused and running states.
+ */
 export const useStopwatch = (): Stopwatch => {
   const [time, setTime] = useState({
     days: 0,

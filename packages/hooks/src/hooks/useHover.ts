@@ -1,5 +1,11 @@
 import { useState, useEffect, type RefObject } from "react";
 
+/**
+ * React hook to detect whether a referenced element is currently hovered.
+ *
+ * @param {RefObject<HTMLDivElement | null>} ref - Ref attached to the element to observe.
+ * @returns {boolean} `true` while the pointer is over the element.
+ */
 export const useHover = (ref: RefObject<HTMLDivElement | null>) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 

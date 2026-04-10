@@ -1,5 +1,14 @@
 import { useState } from "react";
 
+/**
+ * React hook to download files and expose progress and error state.
+ *
+ * @returns {Object} An object with download state and a function to start the download.
+ * @returns {Error | unknown | null} returns.error - The last error thrown while downloading, or `null`.
+ * @returns {boolean} returns.isDownloading - `true` while the file request is in progress.
+ * @returns {number | null} returns.progress - Download progress as a percentage from `0` to `100`, or `null` when the response does not expose its length.
+ * @returns {(fileName: string, fileUrl: string) => Promise<void>} returns.downloadFile - Fetches the file, triggers the browser download, and updates the hook state.
+ */
 export const useDownload = () => {
   const [error, setError] = useState<Error | unknown | null>(null);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
@@ -28,7 +37,7 @@ export const useDownload = () => {
 
   const getStream = async (
     contentLength: string,
-    reader: ReadableStreamDefaultReader<Uint8Array>
+    reader: ReadableStreamDefaultReader<Uint8Array>,
   ): Promise<ReadableStream<Uint8Array>> => {
     let loaded = 0;
     const total = parseInt(contentLength, 10);

@@ -24,6 +24,17 @@ const localStorageSubscribe = (cb: () => void) => {
   return () => window.removeEventListener("storage", cb);
 };
 
+/**
+ * React hook to read, write, and remove a JSON-serializable value in `localStorage`.
+ *
+ * @template T - The stored value type.
+ * @param {string} key - Storage key.
+ * @param {T} initialValue - Value written when the key does not exist yet.
+ * @returns {Object} An object with the current value and storage helpers.
+ * @returns {T} returns.current - Current parsed storage value, or `initialValue` when the key is missing.
+ * @returns {(value: T) => void} returns.setItemValue - Serializes and stores the provided value under `key`.
+ * @returns {() => void} returns.removeItem - Removes the item from `localStorage`.
+ */
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
   const getSnapshot = () => getLocalStorageItem(key);
   const store = useSyncExternalStore(localStorageSubscribe, getSnapshot);
@@ -51,11 +62,14 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
     [key, store, initialValue],
   );
 
-  useEffect(function syncInitialLocalStorageValue() {
-    if (getLocalStorageItem(key) === null && typeof initialValue !== "undefined") {
-      setLocalStorageItem(key, initialValue);
-    }
-  }, [key, initialValue]);
+  useEffect(
+    function syncInitialLocalStorageValue() {
+      if (getLocalStorageItem(key) === null && typeof initialValue !== "undefined") {
+        setLocalStorageItem(key, initialValue);
+      }
+    },
+    [key, initialValue],
+  );
 
   return {
     current: store ? JSON.parse(store) : initialValue,

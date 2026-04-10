@@ -7,6 +7,13 @@ interface MousePosition {
 
 let mousePosition: MousePosition = { x: 0, y: 0 };
 
+/**
+ * React hook to track the current mouse coordinates within the viewport.
+ *
+ * @returns {MousePosition} The current mouse position.
+ * @returns {number} returns.x - Horizontal mouse coordinate relative to the viewport.
+ * @returns {number} returns.y - Vertical mouse coordinate relative to the viewport.
+ */
 export const useMousePosition = (): MousePosition => {
   const subscribe = (callback: () => void) => {
     const handleMouseMove = (event: MouseEvent) => {

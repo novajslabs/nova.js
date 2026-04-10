@@ -1,5 +1,26 @@
 import { useEffect, useState, type RefObject } from "react";
 
+/**
+ * React hook to control a `<video>` element and keep playback state in sync.
+ *
+ * @param {RefObject<HTMLVideoElement>} ref - Ref attached to the target `<video>` element.
+ * @returns {Object} An object with video state and playback controls.
+ * @returns {boolean} returns.isPaused - `true` when the video is paused.
+ * @returns {boolean} returns.isMuted - `true` when the video is muted.
+ * @returns {number} returns.currentVolume - Current volume from `0` to `100`.
+ * @returns {number} returns.currentTime - Current playback position in seconds.
+ * @returns {() => void} returns.play - Starts playback.
+ * @returns {() => void} returns.pause - Pauses playback.
+ * @returns {() => void} returns.togglePause - Toggles between play and pause.
+ * @returns {(increase?: number) => void} returns.increaseVolume - Increases the volume by the provided percentage points. Defaults to `5`.
+ * @returns {(decrease?: number) => void} returns.decreaseVolume - Decreases the volume by the provided percentage points. Defaults to `5`.
+ * @returns {() => void} returns.mute - Mutes the video.
+ * @returns {() => void} returns.unmute - Unmutes the video.
+ * @returns {() => void} returns.toggleMute - Toggles the muted state.
+ * @returns {(seconds?: number) => void} returns.forward - Moves playback forward by the provided number of seconds. Defaults to `5`.
+ * @returns {(seconds?: number) => void} returns.back - Moves playback backward by the provided number of seconds. Defaults to `5`.
+ * @returns {() => void} returns.toggleFullscreen - Toggles fullscreen mode for the referenced video element.
+ */
 export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
   const [videoState, setVideoState] = useState(() => {
     const video = ref.current;

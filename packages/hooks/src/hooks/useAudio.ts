@@ -1,45 +1,24 @@
 import { useEffect, useState, type RefObject } from "react";
 
 /**
- * React hook to manage an audio.
+ * React hook to control an `<audio>` element and keep playback state in sync.
  *
- * @param {RefObject<HTMLAudioElement>} ref - A ref attached to the target `<audio>` element.
- *
- * @returns {Object} An object with the current audio state and control methods.
- * @returns {boolean} returns.isPaused - `true` if the audio is currently paused.
- * @returns {boolean} returns.isMuted - `true` if the audio is currently muted.
- * @returns {number} returns.currentVolume - Current volume level from `0` to `100`.
+ * @param {RefObject<HTMLAudioElement>} ref - Ref attached to the target `<audio>` element.
+ * @returns {Object} An object with audio state and playback controls.
+ * @returns {boolean} returns.isPaused - `true` when the audio is paused.
+ * @returns {boolean} returns.isMuted - `true` when the audio is muted.
+ * @returns {number} returns.currentVolume - Current volume from `0` to `100`.
  * @returns {number} returns.currentTime - Current playback position in seconds.
  * @returns {() => void} returns.play - Starts playback.
  * @returns {() => void} returns.pause - Pauses playback.
- * @returns {() => void} returns.togglePause - Plays if paused, pauses if playing.
- * @returns {(increase?: number) => void} returns.increaseVolume - Increases volume by the given percentage points (default: `5`). Clamped to `100`.
- * @returns {(decrease?: number) => void} returns.decreaseVolume - Decreases volume by the given percentage points (default: `5`). Clamped to `0`.
+ * @returns {() => void} returns.togglePause - Toggles between play and pause.
+ * @returns {(increase?: number) => void} returns.increaseVolume - Increases the volume by the provided percentage points. Defaults to `5`.
+ * @returns {(decrease?: number) => void} returns.decreaseVolume - Decreases the volume by the provided percentage points. Defaults to `5`.
  * @returns {() => void} returns.mute - Mutes the audio.
  * @returns {() => void} returns.unmute - Unmutes the audio.
- * @returns {() => void} returns.toggleMute - Mutes if unmuted, unmutes if muted.
- * @returns {(seconds?: number) => void} returns.forward - Seeks forward by the given number of seconds (default: `5`). Clamped to the track duration.
- * @returns {(seconds?: number) => void} returns.back - Seeks backward by the given number of seconds (default: `5`). Clamped to `0`.
- *
- * @example
- * const audioRef = useRef<HTMLAudioElement>(null);
- *
- * const {
- *   isPaused, isMuted, currentVolume, currentTime,
- *   togglePause, toggleMute, forward, back,
- *   increaseVolume, decreaseVolume,
- * } = useAudio(audioRef);
- *
- * return (
- *   <>
- *     <audio ref={audioRef} src="/track.mp3" />
- *     <button onClick={togglePause}>{isPaused ? "Play" : "Pause"}</button>
- *     <button onClick={toggleMute}>{isMuted ? "Unmute" : "Mute"}</button>
- *     <button onClick={() => back()}>-5s</button>
- *     <button onClick={() => forward()}>+5s</button>
- *     <p>Volume: {currentVolume}% — Time: {currentTime}s</p>
- *   </>
- * );
+ * @returns {() => void} returns.toggleMute - Toggles the muted state.
+ * @returns {(seconds?: number) => void} returns.forward - Moves playback forward by the provided number of seconds. Defaults to `5`.
+ * @returns {(seconds?: number) => void} returns.back - Moves playback backward by the provided number of seconds. Defaults to `5`.
  */
 export const useAudio = (ref: RefObject<HTMLAudioElement>) => {
   const [audioState, setAudioState] = useState(() => {

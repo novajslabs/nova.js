@@ -1,28 +1,18 @@
 import { useState } from "react";
 
 /**
- * React hook to manage and manipulate arrays.
+ * React hook to store an array and expose common immutable array operations.
  *
- * @template T - The type of the array.
- *
- * @param {T[]} initialArray - The array to manage and manipulate.
- *
- * @returns {Object} An object with the array state and manipulation methods.
- * @returns {T[]} returns.array - The current array state.
- * @returns {React.Dispatch<React.SetStateAction<T[]>>} returns.set - Directly sets the array state.
- * @returns {(element: T) => void} returns.push - Appends an element to the end of the array.
- * @returns {(callback: (element: T) => boolean) => void} returns.filter - Filters the array using a callback function.
- * @returns {(index: number, newElement: T) => void} returns.update - Replaces the element at the given index with a new element.
- * @returns {(index: number) => void} returns.remove - Removes the element at the given index.
- * @returns {() => void} returns.clear - Empties the array.
- *
- * @example
- * const { array, push, remove, clear } = useArray<string>([]);
- *
- * push("hello");   // ["hello"]
- * push("world");   // ["hello", "world"]
- * remove(0);       // ["world"]
- * clear();         // []
+ * @template T - The type of each array item.
+ * @param {T[]} initialArray - Initial array value.
+ * @returns {Object} An object with the current array and helper methods.
+ * @returns {T[]} returns.array - The current array value.
+ * @returns {React.Dispatch<React.SetStateAction<T[]>>} returns.set - React state setter for the full array.
+ * @returns {(element: T) => void} returns.push - Appends an item to the end of the array.
+ * @returns {(callback: (element: T) => boolean) => void} returns.filter - Replaces the array with the items that match the predicate.
+ * @returns {(index: number, newElement: T) => void} returns.update - Replaces the item at the given index.
+ * @returns {(index: number) => void} returns.remove - Removes the item at the given index.
+ * @returns {() => void} returns.clear - Removes all items from the array.
  */
 export const useArray = <T>(initialArray: T[]) => {
   const [array, setArray] = useState<T[]>(initialArray);

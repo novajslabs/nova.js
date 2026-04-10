@@ -17,6 +17,11 @@ const subscribeToTouchDevice = (onStoreChange: () => void) => {
   };
 };
 
+/**
+ * React hook to determine whether the current device supports touch input.
+ *
+ * @returns {boolean} `true` when touch input is available on the current device.
+ */
 export const useIsTouchDevice = () => {
   return useSyncExternalStore(subscribeToTouchDevice, getTouchDeviceSnapshot, () => false);
 };

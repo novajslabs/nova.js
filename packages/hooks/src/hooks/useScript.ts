@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
 
+/**
+ * React hook to load an external script tag and track its loading state.
+ *
+ * @param {string} url - Script URL to inject into the document.
+ * @returns {Object} An object with script loading state.
+ * @returns {boolean} returns.loading - `true` while the script is loading.
+ * @returns {string | null} returns.error - Error message when the script fails to load, or `null`.
+ */
 export const useScript = (url: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

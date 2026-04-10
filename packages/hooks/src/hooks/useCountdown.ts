@@ -11,34 +11,18 @@ interface Counter {
 }
 
 /**
- * React hook to create a countdown functionality.
+ * React hook to count down from a maximum value to a minimum value at one-second intervals.
  *
- * @param {number} min - The lower boundary at which the countdown stops.
- * @param {number} max - The starting value of the countdown.
- *
- * @returns {Counter} An object with the current countdown state and control methods.
- * @returns {string} returns.current - The current count as a string.
- * @returns {boolean} returns.isPaused - `true` if the countdown is paused.
- * @returns {boolean} returns.isOver - `true` if the countdown has reached `min`.
+ * @param {number} min - Lower bound where the countdown stops.
+ * @param {number} max - Initial countdown value.
+ * @returns {Counter} An object with countdown state and control methods.
+ * @returns {string} returns.current - Current countdown value as a string.
+ * @returns {boolean} returns.isPaused - `true` when the countdown is paused.
+ * @returns {boolean} returns.isOver - `true` when the countdown reaches `min`.
  * @returns {() => void} returns.pause - Pauses the countdown.
  * @returns {() => void} returns.play - Resumes the countdown.
- * @returns {() => void} returns.reset - Resets the count back to `max` and clears the `isOver` flag.
- * @returns {() => void} returns.togglePause - Pauses if running, resumes if paused.
- *
- * @example
- * const { current, isPaused, isOver, pause, play, reset } = useCountdown(0, 60);
- *
- * if (isOver) return <p>Time's up!</p>;
- *
- * return (
- *   <div>
- *     <p>{current}s remaining</p>
- *     <button onClick={isPaused ? play : pause}>
- *       {isPaused ? "Resume" : "Pause"}
- *     </button>
- *     <button onClick={reset}>Restart</button>
- *   </div>
- * );
+ * @returns {() => void} returns.reset - Resets the countdown back to `max`.
+ * @returns {() => void} returns.togglePause - Toggles between paused and running states.
  */
 export const useCountdown = (min: number, max: number): Counter => {
   const [count, setCount] = useState(max);

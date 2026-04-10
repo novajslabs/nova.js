@@ -37,6 +37,12 @@ const surroundTryCatch = (fn: (data: IShareData) => void | Promise<void>) => {
   };
 };
 
+/**
+ * React hook to share content through the Web Share API with normalized browser error handling.
+ *
+ * @returns {Object} An object with the share helper.
+ * @returns {(data: IShareData) => Promise<void>} returns.shareInNavigator - Shares the provided data through `navigator.share`.
+ */
 export const useNavigatorShare = () => {
   const shareInNavigator = async (data: IShareData) => {
     if (data.files) checkPermission(data.files);

@@ -35,6 +35,15 @@ const parseSearchParams = (url: string, unique: boolean) => {
   );
 };
 
+/**
+ * React hook to parse the search parameters from a URL into a memoized object.
+ *
+ * @template T - Expected shape of the parsed search params object.
+ * @param {string} [url=location.href] - URL whose search params will be parsed.
+ * @param {{ unique: boolean }} [opt={ unique: true }] - Parsing options.
+ * @param {boolean} [opt.unique=true] - Whether repeated keys should keep only the latest value.
+ * @returns {T} Parsed search params object with values deserialized through `JSON.parse`.
+ */
 export const useSearchParams: TUseSearchParams = <T>(
   url = location.href,
   opt = { unique: true },

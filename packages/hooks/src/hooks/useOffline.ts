@@ -1,5 +1,10 @@
 import { useSyncExternalStore } from "react";
 
+/**
+ * React hook to track whether the browser is currently offline.
+ *
+ * @returns {boolean} `true` when `navigator.onLine` reports that the browser is offline.
+ */
 export const useOffline = () => {
   const getSnapshot = () => !navigator.onLine;
 

@@ -7,6 +7,16 @@ interface KeyConfig {
   shift?: boolean;
 }
 
+/**
+ * React hook to track whether a keyboard key combination is currently pressed.
+ *
+ * @param {KeyConfig} config - Key combination to observe.
+ * @param {string} config.key - Keyboard key to match.
+ * @param {boolean} [config.ctrl] - Whether the `Ctrl` key must also be pressed.
+ * @param {boolean} [config.alt] - Whether the `Alt` key must also be pressed.
+ * @param {boolean} [config.shift] - Whether the `Shift` key must also be pressed.
+ * @returns {boolean} `true` while the configured key combination is pressed.
+ */
 export const useKeyPress = (config: KeyConfig) => {
   const [keyPressed, setKeyPressed] = useState(false);
   const { key: targetKey, ctrl, alt, shift } = config;
