@@ -12,17 +12,17 @@ const errorMessages: Record<string, string> = {
   TypeError: "Error while sharing: incorrect data type.",
 };
 
-function checkPermission(files?: File[]) {
+const checkPermission = (files?: File[]) => {
   if (!navigator.canShare) {
     throw new Error("Your browser does not support the sharing feature.");
   }
 
-  if (!navigator.canShare({ files } || { files: [new File([], "")] })) {
+  if (files && !navigator.canShare({ files })) {
     throw new Error(`Your browser does not allow sharing ${files ? "this type of " : ""} files.`);
   }
-}
+};
 
-function surroundTryCatch(fn: (data: IShareData) => void | Promise<void>) {
+const surroundTryCatch = (fn: (data: IShareData) => void | Promise<void>) => {
   return async (data: IShareData) => {
     try {
       await fn(data);
@@ -35,10 +35,10 @@ function surroundTryCatch(fn: (data: IShareData) => void | Promise<void>) {
       }
     }
   };
-}
+};
 
 export const useNavigatorShare = () => {
-  async function shareInNavigator(data: IShareData) {
+  const shareInNavigator = async (data: IShareData) => {
     if (data.files) checkPermission(data.files);
 
     await navigator.share({
@@ -47,7 +47,7 @@ export const useNavigatorShare = () => {
       url: data.url ?? "",
       files: data.files ?? [],
     });
-  }
+  };
 
   return {
     shareInNavigator: surroundTryCatch(shareInNavigator),

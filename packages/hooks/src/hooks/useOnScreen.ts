@@ -1,21 +1,28 @@
-import { RefObject, useEffect, useState } from "react";
+import { useEffect, useState, type RefObject } from "react";
 
-export default function useOnScreen(ref: RefObject<Element>, rootMargin = "0px"): boolean {
+export const useOnScreen = (ref: RefObject<null>, rootMargin = "0px"): boolean => {
   const [isIntersecting, setIntersecting] = useState(false);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting), {
-      rootMargin,
-    });
+  useEffect(
+    function syncIntersectionObserver() {
+      const handleIntersection = ([entry]: IntersectionObserverEntry[]) => {
+        setIntersecting(entry.isIntersecting);
+      };
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+      const observer = new IntersectionObserver(handleIntersection, {
+        rootMargin,
+      });
 
-    return () => {
-      observer.disconnect();
-    };
-  }, [ref, rootMargin]);
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+
+      return () => {
+        observer.disconnect();
+      };
+    },
+    [ref, rootMargin],
+  );
 
   return isIntersecting;
-}
+};
