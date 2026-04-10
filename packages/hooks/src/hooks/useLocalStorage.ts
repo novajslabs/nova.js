@@ -51,7 +51,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
     [key, store, initialValue],
   );
 
-  useEffect(() => {
+  useEffect(function syncInitialLocalStorageValue() {
     if (getLocalStorageItem(key) === null && typeof initialValue !== "undefined") {
       setLocalStorageItem(key, initialValue);
     }
