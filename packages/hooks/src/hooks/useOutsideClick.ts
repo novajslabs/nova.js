@@ -1,17 +1,23 @@
-import { useEffect, RefObject } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 
 export const useOutsideClick = (ref: RefObject<HTMLElement | null>, fn: () => void) => {
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        fn();
-      }
-    };
+  const callbackRef = useRef(fn);
+  callbackRef.current = fn;
 
-    document.addEventListener("click", handleClickOutside);
+  useEffect(
+    function syncOutsideClick() {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (ref.current && !ref.current.contains(event.target as Node)) {
+          callbackRef.current();
+        }
+      };
 
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [ref, fn]);
+      document.addEventListener("click", handleClickOutside);
+
+      return function cleanupOutsideClick() {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    },
+    [ref],
+  );
 };
