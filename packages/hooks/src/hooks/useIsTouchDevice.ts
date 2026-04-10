@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+const getTouchDeviceSnapshot = () =>
+  typeof window !== "undefined" &&
+  typeof navigator !== "undefined" &&
+  ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+
+const subscribeToTouchDevice = (onStoreChange: () => void) => {
+  if (typeof window === "undefined") {
+    return () => undefined;
+  }
+
+  window.addEventListener("resize", onStoreChange);
+
+  return () => {
+    window.removeEventListener("resize", onStoreChange);
+  };
+};
 
 export function useIsTouchDevice() {
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-
-  useEffect(() => {
-    function onResize() {
-      setIsTouchDevice(
-        "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.maxTouchPoints > 0,
-      );
-    }
-
-    window.addEventListener("resize", onResize);
-    onResize();
-
-    return () => {
-      window.removeEventListener("resize", onResize);
-    };
-  }, []);
-
-  return isTouchDevice;
+  return useSyncExternalStore(subscribeToTouchDevice, getTouchDeviceSnapshot, () => false);
 }
