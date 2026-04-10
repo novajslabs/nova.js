@@ -9,11 +9,7 @@ const parseTime = (time: string) => {
 };
 
 const addLeadingZero = (digit: number): string => {
-  let timeStr = "";
-
-  digit % 10 === digit ? (timeStr += `0${digit}`) : (timeStr += `${digit}`);
-
-  return timeStr;
+  return digit % 10 === digit ? `0${digit}` : `${digit}`;
 };
 
 interface Timer {
@@ -37,51 +33,62 @@ export const useTimer = (startTime: string): Timer => {
   const [time, setTime] = useState({ days, hours, minutes, seconds });
   const [paused, setPaused] = useState(false);
   const divider = ":";
-  const [isOver, setIsOver] = useState(false);
+  const initialIsOver = days === 0 && hours === 0 && minutes === 0 && seconds === 0;
+  const [isOver, setIsOver] = useState(initialIsOver);
 
-  useEffect(() => {
-    if (paused) {
-      return;
-    }
+  useEffect(
+    function syncTimer() {
+      if (paused || isOver) {
+        return;
+      }
 
-    const interval = setInterval(() => {
-      setTime((prev) => {
-        let d = prev.days;
-        let h = prev.hours;
-        let m = prev.minutes;
-        let s = prev.seconds;
+      const interval = setInterval(() => {
+        setTime((prev) => {
+          if (prev.days === 0 && prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0) {
+            setIsOver(true);
+            clearInterval(interval);
+            return prev;
+          }
 
-        if (s - 1 < 0) {
-          s = 59;
-          if (m - 1 < 0) {
-            m = 59;
-            if (h - 1 < 0) {
-              h = 23;
-              if (d - 1 >= 0) {
-                d--;
+          let d = prev.days;
+          let h = prev.hours;
+          let m = prev.minutes;
+          let s = prev.seconds;
+
+          if (s - 1 < 0) {
+            s = 59;
+            if (m - 1 < 0) {
+              m = 59;
+              if (h - 1 < 0) {
+                h = 23;
+                if (d - 1 >= 0) {
+                  d--;
+                }
+              } else {
+                h--;
               }
             } else {
-              h--;
+              m--;
             }
           } else {
-            m--;
+            s--;
           }
-        } else {
-          s--;
-        }
 
-        return { days: d, hours: h, minutes: m, seconds: s };
-      });
-    }, 1000);
+          if (d === 0 && h === 0 && m === 0 && s === 0) {
+            setIsOver(true);
+            clearInterval(interval);
+          }
 
-    if (time.seconds === 0 && time.minutes === 0 && time.hours === 0 && time.days === 0) {
-      setIsOver(true);
-      clearInterval(interval);
-      return;
-    }
+          return { days: d, hours: h, minutes: m, seconds: s };
+        });
+      }, 1000);
 
-    return () => clearInterval(interval);
-  }, [days, hours, minutes, seconds, time, paused]);
+      return () => {
+        clearInterval(interval);
+      };
+    },
+    [isOver, paused],
+  );
 
   return {
     current: `${addLeadingZero(time.days)}${divider}${addLeadingZero(
@@ -103,7 +110,7 @@ export const useTimer = (startTime: string): Timer => {
     pause: () => setPaused(true),
     play: () => setPaused(false),
     reset: () => {
-      setIsOver(false);
+      setIsOver(initialIsOver);
       setTime({ days, hours, minutes, seconds });
     },
     togglePause: () => {
