@@ -1,16 +1,20 @@
-import { useEffect, useState, RefObject } from "react";
+import { useEffect, useState, type RefObject } from "react";
 
 export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
-  const video = ref.current;
+  const [videoState, setVideoState] = useState(() => {
+    const video = ref.current;
 
-  const [videoState, setVideoState] = useState({
-    isPaused: video ? video?.paused : true,
-    isMuted: video ? video?.muted : false,
-    currentVolume: video ? video?.volume : 100,
-    currentTime: video ? video?.currentTime : 0,
+    return {
+      isPaused: video ? video.paused : true,
+      isMuted: video ? video.muted : false,
+      currentVolume: video ? video.volume * 100 : 100,
+      currentTime: video ? video.currentTime : 0,
+    };
   });
 
   const play = () => {
+    const video = ref.current;
+
     video?.play();
     setVideoState((prev) => {
       return {
@@ -22,6 +26,8 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
   };
 
   const pause = () => {
+    const video = ref.current;
+
     video?.pause();
     setVideoState((prev) => {
       return {
@@ -31,18 +37,10 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     });
   };
 
-  const handlePlayPauseControl = (e: Event) => {
-    setVideoState((prev) => {
-      return {
-        ...prev,
-        isPaused: (e.target as HTMLVideoElement).paused,
-      };
-    });
-  };
-
-  const togglePause = () => (video?.paused ? play() : pause());
+  const togglePause = () => (ref.current?.paused ? play() : pause());
 
   const handleVolume = (delta: number) => {
+    const video = ref.current;
     const deltaDecimal = delta / 100;
 
     if (video) {
@@ -64,23 +62,9 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     }
   };
 
-  const handleVolumeControl = (e: Event) => {
-    if (e.target && video) {
-      const newVolume = (e.target as HTMLVideoElement).volume * 100;
-
-      if (newVolume === videoState.currentVolume) {
-        handleMute(video.muted);
-        return;
-      }
-
-      setVideoState((prev) => ({
-        ...prev,
-        currentVolume: (e.target as HTMLVideoElement).volume * 100,
-      }));
-    }
-  };
-
   const handleMute = (mute: boolean) => {
+    const video = ref.current;
+
     if (video) {
       video.muted = mute;
       setVideoState((prev) => {
@@ -93,6 +77,8 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
   };
 
   const handleTime = (delta: number = 5) => {
+    const video = ref.current;
+
     if (video) {
       let newTime = video.currentTime + delta;
 
@@ -112,16 +98,9 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     }
   };
 
-  const handleTimeControl = (e: Event) => {
-    setVideoState((prev) => {
-      return {
-        ...prev,
-        currentTime: (e.target as HTMLVideoElement).currentTime,
-      };
-    });
-  };
-
   const toggleFullscreen = () => {
+    const video = ref.current;
+
     if (!document.fullscreenElement) {
       video?.requestFullscreen().catch((err) => {
         console.log(err);
@@ -131,27 +110,69 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      pause();
-    };
-  }, []);
+  useEffect(
+    function syncVideoElement() {
+      const video = ref.current;
 
-  useEffect(() => {
-    if (video) {
-      video.addEventListener("volumechange", handleVolumeControl);
-      video.addEventListener("play", handlePlayPauseControl);
-      video.addEventListener("pause", handlePlayPauseControl);
-      video.addEventListener("timeupdate", handleTimeControl);
+      if (!video) {
+        return;
+      }
+
+      const handleVideoVolumeControl = (e: Event) => {
+        const target = e.target;
+
+        if (!(target instanceof HTMLVideoElement)) {
+          return;
+        }
+
+        setVideoState((prev) => ({
+          ...prev,
+          isMuted: target.muted,
+          currentVolume: target.volume * 100,
+        }));
+      };
+
+      const handleVideoPlayPauseControl = (e: Event) => {
+        const target = e.target;
+
+        if (!(target instanceof HTMLVideoElement)) {
+          return;
+        }
+
+        setVideoState((prev) => ({
+          ...prev,
+          isPaused: target.paused,
+        }));
+      };
+
+      const handleVideoTimeControl = (e: Event) => {
+        const target = e.target;
+
+        if (!(target instanceof HTMLVideoElement)) {
+          return;
+        }
+
+        setVideoState((prev) => ({
+          ...prev,
+          currentTime: target.currentTime,
+        }));
+      };
+
+      video.addEventListener("volumechange", handleVideoVolumeControl);
+      video.addEventListener("play", handleVideoPlayPauseControl);
+      video.addEventListener("pause", handleVideoPlayPauseControl);
+      video.addEventListener("timeupdate", handleVideoTimeControl);
 
       return () => {
-        video.removeEventListener("volumechange", handleVolumeControl);
-        video.removeEventListener("play", handlePlayPauseControl);
-        video.removeEventListener("pause", handlePlayPauseControl);
-        video.removeEventListener("timeupdate", handleTimeControl);
+        video.removeEventListener("volumechange", handleVideoVolumeControl);
+        video.removeEventListener("play", handleVideoPlayPauseControl);
+        video.removeEventListener("pause", handleVideoPlayPauseControl);
+        video.removeEventListener("timeupdate", handleVideoTimeControl);
+        video.pause();
       };
-    }
-  }, [video]);
+    },
+    [ref],
+  );
 
   return {
     ...videoState,
@@ -162,7 +183,7 @@ export const useVideo = (ref: RefObject<HTMLVideoElement>) => {
     decreaseVolume: (decrease: number = 5) => handleVolume(decrease * -1),
     mute: () => handleMute(true),
     unmute: () => handleMute(false),
-    toggleMute: () => handleMute(!video?.muted),
+    toggleMute: () => handleMute(!ref.current?.muted),
     forward: (increase: number = 5) => handleTime(increase),
     back: (decrease: number = 5) => handleTime(decrease * -1),
     toggleFullscreen,
