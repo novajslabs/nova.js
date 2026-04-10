@@ -40,5 +40,12 @@ const subscribeToWindowSize = (onStoreChange: () => void) => {
   return () => window.removeEventListener("resize", onStoreChange);
 };
 
+/**
+ * React hook to track the current browser window size.
+ *
+ * @returns {WindowSize} Current window dimensions.
+ * @returns {number} returns.width - Current window width in pixels.
+ * @returns {number} returns.height - Current window height in pixels.
+ */
 export const useWindowSize = (): WindowSize =>
   useSyncExternalStore(subscribeToWindowSize, getWindowSizeSnapshot, getWindowSizeSnapshot);
