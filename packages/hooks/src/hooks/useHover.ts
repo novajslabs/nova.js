@@ -1,15 +1,24 @@
-import { useState, RefObject, useEffect } from "react";
+import { useState, useEffect, type RefObject } from "react";
 
 export const useHover = (ref: RefObject<HTMLElement>) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
+  useEffect(
+    function syncHoverState() {
+      const node = ref.current;
 
-  useEffect(() => {
-    const node = ref.current;
+      if (!node) {
+        return;
+      }
 
-    if (node) {
+      const handleMouseEnter = () => {
+        setIsHovered(true);
+      };
+
+      const handleMouseLeave = () => {
+        setIsHovered(false);
+      };
+
       node.addEventListener("mouseenter", handleMouseEnter);
       node.addEventListener("mouseleave", handleMouseLeave);
 
@@ -17,8 +26,9 @@ export const useHover = (ref: RefObject<HTMLElement>) => {
         node.removeEventListener("mouseenter", handleMouseEnter);
         node.removeEventListener("mouseleave", handleMouseLeave);
       };
-    }
-  }, [ref]);
+    },
+    [ref],
+  );
 
   return isHovered;
 };
